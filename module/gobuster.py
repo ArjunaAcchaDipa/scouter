@@ -4,7 +4,7 @@ import basic_command
 default_wordlist = "/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"
 default_thread = 10
 
-def scan_dir(target, thread, wordlist, current_time):
+def scan_dir(target, thread, wordlist, current_time, isVerbose):
     if wordlist == "":
         wordlist = default_wordlist
     
@@ -23,4 +23,4 @@ def scan_dir(target, thread, wordlist, current_time):
     # -t    --> thread
     # -o    --> output file
 
-    basic_command.run_command(f"gobuster dir -u {target} -w {wordlist} -t {thread} -o {output_directory}{output}")
+    basic_command.run_command(f"gobuster dir -u {target} -w {wordlist} -t {thread} {basic_command.verbose_level(isVerbose)} {output_directory}{output}")

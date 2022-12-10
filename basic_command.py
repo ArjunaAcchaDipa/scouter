@@ -48,16 +48,22 @@ def mkdir(directory_location):
 def filename_time():
     return time.strftime("%Y%m%d_%H%M%S", time.localtime())
 
-def isIP(host):
+def check_IP(host):
     # regex below to validate the host is in ip format or not
     if (re.search("^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", host)):
         return True
     else:
         return False
 
-def checkURL(host):
+def check_URL(host):
     # regex below to validate the host is in url format or not
     if (re.search("(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)", host)):
         return True
     else:
         return False
+
+def verbose_level(isVerbose):
+    if isVerbose:
+        return "| tee"
+    else:
+        return ">"
