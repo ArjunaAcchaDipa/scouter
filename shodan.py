@@ -1,9 +1,9 @@
 import basic_command
 import shodan
 
-# ! input isVerbose
+# ! input is_verbose
 
-def scan(search_query, api_key, current_time, isVerbose):
+def scan(search_query, api_key, current_time, is_verbose):
     FACETS = [
         'org',
         'domain',
