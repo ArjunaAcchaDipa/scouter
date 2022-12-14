@@ -13,7 +13,7 @@ def scan(target, thread, wordlist, current_time, is_verbose):
     # -t    --> thread
     # -o    --> output file
 
-    basic_command.run_command(f"gobuster dir -u {target} -w {wordlist} -t {thread} {basic_command.verbose_level(is_verbose)} {output_directory}{output}")
+    basic_command.run_command(f"gobuster dir -u {target} -w {wordlist} -t {thread} -k {basic_command.verbose_level(is_verbose)} {output_directory}{output}")
 
 def show_options(target, thread, wordlist, current_time, is_verbose, is_run):
     default_wordlist = "/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"
