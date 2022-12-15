@@ -12,5 +12,5 @@ def scan(target, thread, wordlist, current_time, is_verbose):
     # -w    --> wordlist
     # -t    --> thread
     # -o    --> output file
-
-    basic_command.run_command(f"gobuster dir -u {target} -w {wordlist} -t {thread} {basic_command.verbose_level(is_verbose)} {output_directory}{output}")
+    
+    basic_command.run_command(f"gobuster dir -u {target} -w {wordlist} -t {thread} -k {basic_command.verbose_level(is_verbose)} {output_directory}{output}")
