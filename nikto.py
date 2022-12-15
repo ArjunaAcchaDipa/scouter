@@ -7,15 +7,3 @@ def scan(target, current_time, is_verbose):
     basic_command.mkdir(output_directory)
 
     basic_command.run_command(f"nikto -h {target} {basic_command.verbose_level(is_verbose)} {output_directory}{output}")
-
-def show_options(target, current_time, is_verbose, is_run):
-    options = f"""
-    nikto
-    -----
-
-    TARGET          {target}
-    """
-    print(options)
-
-    if is_run:
-        scan(target, current_time, is_verbose)

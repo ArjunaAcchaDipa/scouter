@@ -17,22 +17,3 @@ def scan(target, is_ip, is_url, current_time, is_verbose):
 
     elif is_ip and not is_url:
         basic_command.run_command(f"curl --request GET --url https://www.virustotal.com/api/v3/ip_adresses/{target} --header 'x-apikey: {default_api_key}' {basic_command.verbose_level(is_verbose)} {output_directory}{output}")
-
-def show_options(target, is_ip, is_url, current_time, is_verbose, is_run):
-    is_ip = basic_command.check_ip(target)
-    is_url = basic_command.check_url(target)
-
-    if not is_ip and not is_url:
-        print("[!] The target is invalid!")
-        exit()
-
-    options = f"""
-    virustotal
-    ----------
-
-    TARGET          {target}
-    """
-    print(options)
-
-    if is_run:
-        scan(target, is_ip, is_url, current_time, is_verbose)
