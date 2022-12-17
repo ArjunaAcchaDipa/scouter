@@ -4,6 +4,16 @@ import subprocess
 import time
 import re
 
+def colors(color):
+    if color == "red":
+        return "\033[1;31m"
+    elif color == "yellow":
+        return "\033[1;33m"
+    elif color == "green":
+        return "\033[1;32m"
+    elif color == "normal":
+        return "\033[0m"
+
 def gobuster_parse_command(command):
     host = ""
     thread = 10
