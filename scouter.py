@@ -1,4 +1,3 @@
-import abc
 import basic_command
 
 from getopt import getopt
