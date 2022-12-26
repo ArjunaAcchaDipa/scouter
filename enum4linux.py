@@ -1,8 +1,8 @@
 import basic_command
 
 def scan(target, sharenames_wordlist, current_time, is_verbose):
-    output = f"enum4linux_{target}_{current_time}.txt"
-    output_directory = f"./result/current_time/enum4linux/"
+    output = f"enum4linux_{target}.txt"
+    output_directory = f"./result/{current_time}/"
 
     basic_command.mkdir(output_directory)
     
