@@ -3,6 +3,7 @@ import sys
 import subprocess
 import time
 import re
+from decouple import config
 
 def colors(color):
     if color == "red":
@@ -58,22 +59,32 @@ def mkdir(directory_location):
 def filename_time():
     return time.strftime("%Y%m%d_%H%M%S", time.localtime())
 
-def check_ip(host):
+def check_ip_url(host):
     # regex below to validate the host is in ip format or not
     if (re.search("^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", host)):
-        return True
+        is_ip = True
     else:
-        return False
+        is_ip = False
 
-def check_url(host):
     # regex below to validate the host is in url format or not
     if (re.search("(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)", host)):
-        return True
+        is_url = True
     else:
-        return False
+        is_url = False
+    
+    return is_ip, is_url
 
 def verbose_level(isVerbose):
     if isVerbose:
         return "| tee"
     else:
         return ">"
+
+def read_file(filename):
+    f = open(filename, "r")
+    result = f.read()
+    f.close()
+    return result
+
+def get_data_from_env(env_data):
+    return config(env_data)

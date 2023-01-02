@@ -1,93 +1,137 @@
 import basic_command
+import dig, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, whois, wpscan
 
 from getopt import getopt
 import sys
 import time
 
-def auto(host, port, wordlist, thread, tools, is_verbose):
-    pass
+def auto_scan(host, port, wordlist, thread, tools, filename_timestamp, is_verbose):
+    nmap_filename = nmap.scan(host, port, filename_timestamp, is_verbose)
+    nmap_result = basic_command.read_file(nmap_filename)
 
-def default(host, port, wordlist, thread, tools, is_verbose):
-    pass
+    if "80" in nmap_result or "443" in nmap_result or "http" in nmap_result:
+        dig.scan(host, filename_timestamp, is_verbose)
+        dnsenum.scan(host, filename_timestamp, is_verbose)
+
+        # gobuster.scan(target, thread, wordlist, current_time, is_directory_scan, is_subdomain_scan, is_verbose)
+        gobuster.scan(host, thread, wordlist, filename_timestamp, True, False, is_verbose)
+        gobuster.scan(host, thread, wordlist, filename_timestamp, False, True, is_verbose)
+        
+        nikto.scan(host, filename_timestamp, is_verbose)
+
+    # if ""
 
 def main():
     start = time.time()
     filename_timestamp = basic_command.filename_time()
 
-    options, _ = getopt(sys.argv[1:], "h:p:w:t:T:v", ["host", "port", "wordlist", "thread", "tools", "verbose"])
+    options, _ = getopt(sys.argv[1:], "h:p:t:wv", ["host", "port", "thread", "wordlist", "verbose", "enum4linux-wordlist", "dir-wordlist", "subdomain-wordlist", "shodan-api", "virustotal_api"])
 
     host = ""
     port = ""
     wordlist = ""
     thread = 10
     tools = ""
+    default_wordlist = False
     is_verbose = False
 
-    # !! Might be converted to call a function rather than using a flag
-    # tools
-    tool_dig = False
-    tool_dnsenum = False
-    tool_enum4linux = False
-    tool_gobuster = False
-    tool_nikto = False
-    tool_nmap = False
-    tool_searchsploit = False
-    tool_shodan = False
-    tool_virustotal = False
-    tool_whois = False
-    tool_wpscan = False
+    # Wordlist
+    enum4linux_wordlist = ""
+    gobuster_dir_wordlist = ""
+    gobuster_subdomain_wordlist = ""
+
+    # API Key
+    shodan_api = ""
+    virustotal_api = ""
+
+    # Host Type (IP or URL)
+    is_ip = False
+    is_url = False
 
     try:
         for key, value in options:
             if key in ["-h", "--host"]:
                 host = value
+                is_ip, is_url = basic_command.check_ip_url(host)
+                if not is_ip and not is_url:
+                    print("[!] Invalid IP or hostname detected.")
+                    print("[-] Example:")
+                    print("\t[>] 192.168.0.1")
+                    print("\t[>] google.com")
+                    exit()
+                # print(f"host: {host}")
+
             elif key in ["-p", "--port"]:
                 port = value
+                try:
+                    if port == "all":
+                        pass
+                    elif "-" not in port:
+                        if int(port) >= 1 and int(port) <= 65535:
+                            pass
+                        else:
+                            raise
+                    elif "-" in port and port.count("-") == 1:
+                        for number in int(port.split("-")):
+                            if number < 1 or number > 65535:
+                                raise
+                            else:
+                                pass
+                    else:
+                        raise
+                except:
+                    print("[!] Invalid Port detected.")
+                    print("[-] Example:")
+                    print("\t[>] 80")
+                    print("\t[>] 443")
+                    print("\t[>] 1-1000")
+                    print("\t[>] 1-65535")
+                    print("\t[>] all")
+                    exit()
+                # print(f"port: {port}")
+
+            elif key in ["--enum4linux-wordlist"]:
+                enum4linux_wordlist = value
+                # print(f"enum4linux_wordlist: {enum4linux_wordlist}")
+
+            elif key in ["--dir-wordlist"]:
+                gobuster_dir_wordlist = value
+                # print(f"gobuster_dir_wordlist: {gobuster_dir_wordlist}")
+
+            elif key in ["--subdomain-wordlist"]:
+                gobuster_subdomain_wordlist = value
+                # print(f"gobuster_subdomain_wordlist: {gobuster_subdomain_wordlist}")
+                
             elif key in ["-w", "--wordlist"]:
-                wordlist = value
+                default_wordlist = True
+                # print(f"default_wordlist: {default_wordlist}")
+
             elif key in ["-t", "--thread"]:
                 thread = value
-            elif key in ["-T", "--tools"]:
-                tools = value
+                # print(f"thread: {thread}")
+
             elif key in ["-v", "--verbose"]:
                 is_verbose = True
+                # print(f"is_verbose: {is_verbose}")
+
+            elif key in ["--shodan-api"]:
+                shodan_api = value
+                # print(f"shodan_api: {shodan_api}")
+
+            elif key in ["--virustotal-api"]:
+                virustotal_api = value
+                # print(f"virustotal_api: {virustotal_api}") 
+
     except:
         print("[!] Wrong input parameter!")
+        print("[-] Example:")
+        print("\t[>] python3 scouter.py -h 192.168.0.1 -p 1-1000")
+        print("\t[>] python3 scouter.py -h www.google.com -p 1-1000")
+        print("\t[>] python3 scouter.py -h www.google.com -p all -w -v")
+        print("\t[>] python3 scouter.py -h www.google.com -p 1-65535 --enum4linux-wordlist /usr/share/enum4linux/share-list.txt")
+        exit()
 
-    if tools == "":
-        tool_dig = True
-        tool_dnsenum = True
-        tool_whois = True
-    elif tools == "auto":
-        auto(host, port, wordlist, thread, tools, is_verbose)
-    else:
-        try:
-            for tool in tools.split(","):
-                if "dig" in tool:
-                    tool_dig = True
-                elif "dnsenum" in tool:
-                    tool_dnsenum = True
-                elif "enum4linux" in tool:
-                    tool_enum4linux = True
-                elif "gobuster" in tool:
-                    tool_gobuster = True
-                elif "nikto" in tool:
-                    tool_nikto = True
-                elif "nmap" in tool:
-                    tool_nmap = True
-                elif "searchsploit" in tool:
-                    tool_searchsploit = True
-                elif "shodan" in tool:
-                    tool_shodan = True
-                elif "virustotal" in tool:
-                    tool_virustotal = True
-                elif "whois" in tool:
-                    tool_whois = True
-                elif "wpscan" in tool:
-                    tool_wpscan = True
-        except Exception as e:
-            print("[!] There is something wrong!")
-            print(e)
+    auto_scan(host, port, wordlist, thread, tools, filename_timestamp, is_verbose)
 
 if __name__ == "__main__":
     main()

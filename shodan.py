@@ -2,6 +2,7 @@ import basic_command
 import shodan
 
 # ! input is_verbose
+# ! api key set to .env
 
 def scan(search_query, api_key, current_time, is_verbose):
     FACETS = [
