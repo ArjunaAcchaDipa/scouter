@@ -5,7 +5,7 @@ from getopt import getopt
 import sys
 import time
 
-def auto_scan(host, port, wordlist, thread, tools, filename_timestamp, is_verbose):
+def auto_scan(host, port, is_default, thread, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
     nmap_filename = nmap.scan(host, port, filename_timestamp, is_verbose)
     nmap_result = basic_command.read_file(nmap_filename)
 
@@ -13,9 +13,9 @@ def auto_scan(host, port, wordlist, thread, tools, filename_timestamp, is_verbos
         dig.scan(host, filename_timestamp, is_verbose)
         dnsenum.scan(host, filename_timestamp, is_verbose)
 
-        # gobuster.scan(target, thread, wordlist, current_time, is_directory_scan, is_subdomain_scan, is_verbose)
-        gobuster.scan(host, thread, wordlist, filename_timestamp, True, False, is_verbose)
-        gobuster.scan(host, thread, wordlist, filename_timestamp, False, True, is_verbose)
+        # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose)
+        gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
+        gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
         
         nikto.scan(host, filename_timestamp, is_verbose)
 
@@ -25,14 +25,13 @@ def main():
     start = time.time()
     filename_timestamp = basic_command.filename_time()
 
-    options, _ = getopt(sys.argv[1:], "h:p:t:wv", ["host", "port", "thread", "wordlist", "verbose", "enum4linux-wordlist", "dir-wordlist", "subdomain-wordlist", "shodan-api", "virustotal_api"])
+    options, _ = getopt(sys.argv[1:], "h:p:t:dv", ["host", "port", "thread", "default", "verbose", "enum4linux-wordlist", "dir-wordlist", "subdomain-wordlist", "shodan-api", "virustotal_api"])
 
     host = ""
     port = ""
     wordlist = ""
     thread = 10
-    tools = ""
-    default_wordlist = False
+    is_default = False
     is_verbose = False
 
     # Wordlist
@@ -102,8 +101,8 @@ def main():
                 gobuster_subdomain_wordlist = value
                 # print(f"gobuster_subdomain_wordlist: {gobuster_subdomain_wordlist}")
                 
-            elif key in ["-w", "--wordlist"]:
-                default_wordlist = True
+            elif key in ["-d", "--default"]:
+                is_default = True
                 # print(f"default_wordlist: {default_wordlist}")
 
             elif key in ["-t", "--thread"]:
@@ -131,7 +130,7 @@ def main():
         print("\t[>] python3 scouter.py -h www.google.com -p 1-65535 --enum4linux-wordlist /usr/share/enum4linux/share-list.txt")
         exit()
 
-    auto_scan(host, port, wordlist, thread, tools, filename_timestamp, is_verbose)
+    auto_scan(host, port, is_default, thread, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
 
 if __name__ == "__main__":
     main()

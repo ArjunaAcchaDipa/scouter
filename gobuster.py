@@ -1,17 +1,13 @@
 import basic_command
 
-def scan(target, thread, wordlist, current_time, is_directory_scan, is_subdomain_scan, is_verbose):
-    if is_directory_scan:
-        output = f"gobuster_directory_{target}.txt"
-    elif is_subdomain_scan:
-        output = f"gobuster_subdomain_{target}.txt"
+def scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose):
+    # check default variable(s)
+    output, thread, wordlist = default_check(target, thread, is_default, scan_type, wordlist)
         
     output_directory = f"./result/{current_time}/"
 
     basic_command.mkdir(output_directory)
 
-    # check default variable(s)
-    scan_type, wordlist, thread = default_check(wordlist, thread, is_directory_scan, is_subdomain_scan)
 
     # dir   --> to scan directory
     # vhost --> to scan subdomain
@@ -22,22 +18,22 @@ def scan(target, thread, wordlist, current_time, is_directory_scan, is_subdomain
     
     basic_command.run_command(f"gobuster {scan_type} -u {target} -w {wordlist} -t {thread} -k {basic_command.verbose_level(is_verbose)} {output_directory}{output}")
 
-def default_check(wordlist, thread, is_directory_scan, is_subdomain_scan):
+def default_check(target, thread, is_default, scan_type, wordlist):
     # getting data from .env file
-    default_scan_directory_wordlist = ""
-    default_scan_subdomain_wordlist = ""
+    default_scan_directory_wordlist = "./wordlist/directory-list-2.3-medium.txt"
+    default_scan_subdomain_wordlist = "./wordlist/subdomain-wordlist.txt"
     default_thread = "10"
 
-    if is_directory_scan:
-        scan_type = "dir"
-        if wordlist == "":
-            wordlist = input("Wordlist for Directory Scan: ")
-    elif is_subdomain_scan:
-        scan_type = "vhost"
-        if wordlist == "":
-            wordlist = input("Wordlist for Subdomain Scan: ")
-    
-    if thread == "":
-        thread = 10
+    if scan_type == "directory":
+        output = f"gobuster_directory_{target}.txt"
+    elif scan_type == "subdomain":
+        output = f"gobuster_subdomain_{target}.txt"
 
-    return scan_type, wordlist, thread
+    if is_default and scan_type == "directory":
+        return output, default_thread, default_scan_directory_wordlist
+    elif is_default and scan_type == "subdomain":
+        return output, default_thread, default_scan_subdomain_wordlist
+    elif not is_default:
+        wordlist = input("Wordlist for Directory/Subdomain Scan: ")
+        thread = input("Thread: ")
+        return output, thread, wordlist
