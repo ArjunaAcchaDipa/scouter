@@ -15,7 +15,7 @@ def scan(target, port, current_time, is_verbose):
     # -T4       --> timing template set to 4 (higher is faster)
     # -Pn       --> Treat all hosts as online (skip host discovery)
 
-    basic_command.run_command(f"nmap -A -p{port} --script vulners -T4 {target} -Pn {basic_command.verbose_level(is_verbose)} {output_directory}{output}")
+    basic_command.run_command(f"nmap -A -p{port} --script vulners -T4 {target} -Pn -oN {output_directory}{output}")
 
     return f"{output_directory}{output}"
 

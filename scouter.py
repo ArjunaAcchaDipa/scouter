@@ -12,6 +12,9 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, gobuster_dir_
     if "21" in nmap_result or "ftp" in nmap_result:
         ftp.enumeration(host, filename_timestamp, is_verbose)
 
+    if "22" in nmap_result or "ssh" in nmap_result:
+        ssh.enumeration(host, filename_timestamp, is_verbose)
+
     if "80" in nmap_result or "443" in nmap_result or "http" in nmap_result:
         dig.scan(host, filename_timestamp, is_verbose)
         dnsenum.scan(host, filename_timestamp, is_verbose)
