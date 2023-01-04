@@ -26,7 +26,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, gobuster_dir_
         nikto_result = nikto.scan(host, filename_timestamp, is_verbose)
 
     if "135" in nmap_result or "139" in nmap_result or "445" in nmap_result or "smb" in nmap_result or "samba" in nmap_result or "Samba" in nmap_result:
-        enum4linux_result = enum4linux.scan(host, enum4linux_wordlist, filename_timestamp, is_verbose)
+        enum4linux_result = enum4linux.scan(host, is_default, filename_timestamp, enum4linux_wordlist, is_verbose)
 
 def main():
     start = time.time()

@@ -1,13 +1,13 @@
 import basic_command
 
-def scan(target, wordlist, current_time, is_verbose):
+def scan(target, is_default, current_time, wordlist, is_verbose):
     output_file = f"enum4linux_{target}.txt"
     output_directory = f"./result/{current_time}/"
     output = f"{output_directory}{output_file}"
 
     basic_command.mkdir(output_directory)
 
-    wordlist = default_check(wordlist)
+    wordlist = default_check(is_default, wordlist)
     
     # -n --> nmblookup
     # -P --> get password policy information
@@ -20,10 +20,12 @@ def scan(target, wordlist, current_time, is_verbose):
 
     return f"{result}"
 
-def default_check(wordlist):
-    default_wordlist = ""
+def default_check(is_default, wordlist):
+    default_wordlist = "./wordlist/share-list.txt"
 
-    if wordlist == "":
+    if is_default:
+        wordlist = default_wordlist
+    elif wordlist == "":
         wordlist = input("Wordlist for enum4linux: ")
     
     return wordlist
