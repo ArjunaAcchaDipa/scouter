@@ -1,13 +1,16 @@
 import basic_command
-import dig, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, whois, wpscan
+import dig, dnsenum, enum4linux, gobuster, nikto, nmap, ftp, google, searchsploit, shodan, virustotal, whois, wpscan
 
 from getopt import getopt
 import sys
 import time
 
-def auto_scan(host, port, is_default, thread, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
+def auto_scan(host, port, is_default, thread, enum4linux_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
     nmap_filename = nmap.scan(host, port, filename_timestamp, is_verbose)
     nmap_result = basic_command.read_file(nmap_filename)
+
+    if "21" in nmap_result or "ftp" in nmap_result:
+        ftp.enumeration(host, filename_timestamp, is_verbose)
 
     if "80" in nmap_result or "443" in nmap_result or "http" in nmap_result:
         dig.scan(host, filename_timestamp, is_verbose)
@@ -19,7 +22,8 @@ def auto_scan(host, port, is_default, thread, gobuster_dir_wordlist, gobuster_su
         
         nikto.scan(host, filename_timestamp, is_verbose)
 
-    # if ""
+    if "135" in nmap_result or "139" in nmap_result or "445" in nmap_result or "smb" in nmap_result or "samba" in nmap_result or "Samba" in nmap_result:
+        enum4linux.scan(host, enum4linux_wordlist, filename_timestamp, is_verbose)
 
 def main():
     start = time.time()
@@ -130,7 +134,7 @@ def main():
         print("\t[>] python3 scouter.py -h www.google.com -p 1-65535 --enum4linux-wordlist /usr/share/enum4linux/share-list.txt")
         exit()
 
-    auto_scan(host, port, is_default, thread, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
+    auto_scan(host, port, is_default, thread, enum4linux_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
 
 if __name__ == "__main__":
     main()
