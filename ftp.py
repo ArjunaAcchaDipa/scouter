@@ -1,6 +1,6 @@
 import basic_command
 
-def enumeration(target, current_time, is_verbose):
+def enumeration(target, is_default, current_time, wordlist, is_verbose):
     output_response = f"ftp_response_{target}.txt"
     output_html = f"ftp_html_{target}.txt"
     output_directory = f"./result/{current_time}/"
@@ -8,9 +8,9 @@ def enumeration(target, current_time, is_verbose):
 
     basic_command.mkdir(output_directory)
 
-    default_ftp_credentials = basic_command.read_file("./wordlist/ftp-betterdefaultpasslist.txt").split("\n")
+    credentials = default_check(is_default, wordlist)
 
-    for credential in default_ftp_credentials:
+    for credential in credentials:
         basic_command.run_command(f"wget ftp://{credential}@{target} -o {output} -O {output_directory}{output_html}")
 
         result = basic_command.read_file(f"{output}")
@@ -19,3 +19,13 @@ def enumeration(target, current_time, is_verbose):
             break
 
     return f"{result}"
+
+def default_check(is_default, wordlist):
+    default_ftp_credentials = basic_command.read_file("./wordlist/ftp-betterdefaultpasslist.txt").split("\n")
+
+    if is_default:
+        wordlist = default_ftp_credentials
+    elif wordlist == "":
+        wordlist = input("Wordlist for FTP Credentials Wordlist: ")
+    
+    return wordlist

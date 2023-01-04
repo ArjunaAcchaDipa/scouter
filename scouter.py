@@ -5,12 +5,12 @@ from getopt import getopt
 import sys
 import time
 
-def auto_scan(host, port, is_default, thread, enum4linux_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
+def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
     nmap_filename = nmap.scan(host, port, filename_timestamp, is_verbose)
     nmap_result = basic_command.read_file(nmap_filename)
 
     if "21" in nmap_result or "ftp" in nmap_result:
-        ftp_result = ftp.enumeration(host, filename_timestamp, is_verbose)
+        ftp_result = ftp.enumeration(host, is_default, filename_timestamp, ftp_wordlist, is_verbose)
 
     if "22" in nmap_result or "ssh" in nmap_result:
         ssh_result = ssh.enumeration(host, filename_timestamp, is_verbose)
@@ -32,7 +32,7 @@ def main():
     start = time.time()
     filename_timestamp = basic_command.filename_time()
 
-    options, _ = getopt(sys.argv[1:], "h:p:t:dv", ["host", "port", "thread", "default", "verbose", "enum4linux-wordlist", "dir-wordlist", "subdomain-wordlist", "shodan-api", "virustotal_api"])
+    options, _ = getopt(sys.argv[1:], "h:p:t:dv", ["host", "port", "thread", "default", "verbose", "enum4linux-wordlist", "ftp-wordlist", "dir-wordlist", "subdomain-wordlist", "shodan-api", "virustotal_api"])
 
     host = ""
     port = ""
@@ -45,6 +45,7 @@ def main():
     enum4linux_wordlist = ""
     gobuster_dir_wordlist = ""
     gobuster_subdomain_wordlist = ""
+    ftp_wordlist = ""
 
     # API Key
     shodan_api = ""
@@ -99,6 +100,10 @@ def main():
             elif key in ["--enum4linux-wordlist"]:
                 enum4linux_wordlist = value
                 # print(f"enum4linux_wordlist: {enum4linux_wordlist}")
+
+            elif key in ["--ftp-wordlist"]:
+                ftp_wordlist = value
+                # print(f"ftp_wordlist: {ftp_wordlist}")
 
             elif key in ["--dir-wordlist"]:
                 gobuster_dir_wordlist = value
