@@ -11,4 +11,4 @@ def enumeration(target, current_time, is_verbose):
 
     result = basic_command.read_file(f"{output}")
 
-    return f"{output}"
+    return f"{result}"

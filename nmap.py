@@ -1,8 +1,9 @@
 import basic_command
 
 def scan(target, port, current_time, is_verbose):
-    output = f"nmap_{target}.txt"
+    output_file = f"nmap_{target}.txt"
     output_directory = f"./result/{current_time}/"
+    output = f"{output_directory}{output_file}"
 
     basic_command.mkdir(output_directory)
 
@@ -15,9 +16,11 @@ def scan(target, port, current_time, is_verbose):
     # -T4       --> timing template set to 4 (higher is faster)
     # -Pn       --> Treat all hosts as online (skip host discovery)
 
-    basic_command.run_command(f"nmap -A -p{port} --script vulners -T4 {target} -Pn -oN {output_directory}{output}")
+    basic_command.run_command(f"nmap -A -p{port} --script vulners -T4 {target} -Pn -oN {output}")
 
-    return f"{output_directory}{output}"
+    result = basic_command.read_file(f"{output}")
+
+    return f"{result}"
 
 def default_check(port):
     if port == "":

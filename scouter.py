@@ -1,5 +1,5 @@
 import basic_command
-import dig, dnsenum, enum4linux, gobuster, nikto, nmap, ftp, google, searchsploit, shodan, virustotal, whois, wpscan
+import dig, dnsenum, enum4linux, gobuster, nikto, nmap, ftp, google, searchsploit, shodan, ssh, virustotal, whois, wpscan
 
 from getopt import getopt
 import sys
@@ -10,23 +10,23 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, gobuster_dir_
     nmap_result = basic_command.read_file(nmap_filename)
 
     if "21" in nmap_result or "ftp" in nmap_result:
-        ftp.enumeration(host, filename_timestamp, is_verbose)
+        ftp_result = ftp.enumeration(host, filename_timestamp, is_verbose)
 
     if "22" in nmap_result or "ssh" in nmap_result:
-        ssh.enumeration(host, filename_timestamp, is_verbose)
+        ssh_result = ssh.enumeration(host, filename_timestamp, is_verbose)
 
     if "80" in nmap_result or "443" in nmap_result or "http" in nmap_result:
-        dig.scan(host, filename_timestamp, is_verbose)
-        dnsenum.scan(host, filename_timestamp, is_verbose)
+        dig_result = dig.scan(host, filename_timestamp, is_verbose)
+        dnsenum_result = dnsenum.scan(host, filename_timestamp, is_verbose)
 
         # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose)
-        gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
-        gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
+        directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
+        subdomain_result = gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
         
-        nikto.scan(host, filename_timestamp, is_verbose)
+        nikto_result = nikto.scan(host, filename_timestamp, is_verbose)
 
     if "135" in nmap_result or "139" in nmap_result or "445" in nmap_result or "smb" in nmap_result or "samba" in nmap_result or "Samba" in nmap_result:
-        enum4linux.scan(host, enum4linux_wordlist, filename_timestamp, is_verbose)
+        enum4linux_result = enum4linux.scan(host, enum4linux_wordlist, filename_timestamp, is_verbose)
 
 def main():
     start = time.time()
