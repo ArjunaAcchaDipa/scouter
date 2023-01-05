@@ -1,13 +1,13 @@
 import basic_command
 
 def enumeration(target, current_time, is_verbose):
-    output_file = f"ssh_{target}.txt"
+    output_file = f"netbios_{target}.txt"
     output_directory = f"./result/{current_time}/"
     output = f"{output_directory}{output_file}"
 
     basic_command.mkdir(output_directory)
 
-    basic_command.run_command(f"nmap -p22 {target} -Pn --script ssh2-enum-algos,ssh-hostkey,ssh-auth-methods --script-args ssh_hostkey=full,ssh.user=root -oN {output}")
+    basic_command.run_command(f"nmblookup -A {target} > {output} && nmap --script nbstat -p137 {target} >> {output}")
 
     result = basic_command.read_file(f"{output}")
 

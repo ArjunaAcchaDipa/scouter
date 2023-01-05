@@ -1,5 +1,6 @@
 import basic_command
-import dig, dnsenum, enum4linux, gobuster, nikto, nmap, ftp, google, searchsploit, shodan, ssh, virustotal, whois, wpscan
+import dig, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, whois, wpscan
+import ftp, ssh, pop, netbios, ldap, mssql, mysql
 
 from getopt import getopt
 import sys
@@ -9,13 +10,13 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
     nmap_filename = nmap.scan(host, port, filename_timestamp, is_verbose)
     nmap_result = basic_command.read_file(nmap_filename)
 
-    if "21" in nmap_result or "ftp" in nmap_result:
+    if "21" in nmap_result or "ftp" in nmap_result.lower():
         ftp_result = ftp.enumeration(host, is_default, filename_timestamp, ftp_wordlist, is_verbose)
 
-    if "22" in nmap_result or "ssh" in nmap_result:
+    if "22" in nmap_result or "ssh" in nmap_result.lower():
         ssh_result = ssh.enumeration(host, filename_timestamp, is_verbose)
 
-    if "80" in nmap_result or "443" in nmap_result or "http" in nmap_result:
+    if "80" in nmap_result or "443" in nmap_result or "http" in nmap_result.lower():
         dig_result = dig.scan(host, filename_timestamp, is_verbose)
         dnsenum_result = dnsenum.scan(host, filename_timestamp, is_verbose)
 
@@ -25,8 +26,26 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
         
         nikto_result = nikto.scan(host, filename_timestamp, is_verbose)
 
-    if "135" in nmap_result or "139" in nmap_result or "445" in nmap_result or "smb" in nmap_result or "samba" in nmap_result or "Samba" in nmap_result:
+    if "110" in nmap_result or "pop" in nmap_result.lower():
+        pop_result = pop.enumeration(host, filename_timestamp, is_verbose)
+
+    if "135" in nmap_result or "139" in nmap_result or "445" in nmap_result or "smb" in nmap_result.lower() or "samba" in nmap_result.lower():
         enum4linux_result = enum4linux.scan(host, is_default, filename_timestamp, enum4linux_wordlist, is_verbose)
+    
+    if "137" in nmap_result or "138" in nmap_result:
+        netbios.enumeration(host, filename_timestamp, is_verbose)
+    
+    if "389" in nmap_result or "ldap" in nmap_result.lower():
+        ldap.enumeration(host, filename_timestamp, is_verbose)
+    
+    if "1433" in nmap_result or "ms-sql" in nmap_result.lower() or "mssql" in nmap_result.lower():
+        mssql.enumeration(host, filename_timestamp, is_verbose)
+    
+    if "3306" in nmap_result or "mysql" in nmap_result.lower():
+        mysql.enumeration(host, filename_timestamp, is_verbose)
+    
+    if "wp" in nmap_result.lower() or "wordpress" in nmap_result.lower():
+        wpscan.scan(host, filename_timestamp, is_verbose)
 
 def main():
     start = time.time()
