@@ -7,8 +7,22 @@ import sys
 import time
 
 def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
-    nmap_filename = nmap.scan(host, port, filename_timestamp, is_verbose)
-    nmap_result = basic_command.read_file(nmap_filename)
+    nmap_result = nmap.scan(host, port, filename_timestamp, is_verbose)
+
+    ftp_result = ""
+    ssh_result = ""
+    dig_result = ""
+    dnsenum_result = ""
+    directory_result = ""
+    subdomain_result = ""
+    nikto_result = ""
+    pop_result = ""
+    enum4linux_result = ""
+    netbios_result = ""
+    ldap_result = ""
+    mssql_result = ""
+    mysql_result = ""
+    wpscan_result = ""
 
     if "21" in nmap_result or "ftp" in nmap_result.lower():
         ftp_result = ftp.enumeration(host, is_default, filename_timestamp, ftp_wordlist, is_verbose)
@@ -33,19 +47,19 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
         enum4linux_result = enum4linux.scan(host, is_default, filename_timestamp, enum4linux_wordlist, is_verbose)
     
     if "137" in nmap_result or "138" in nmap_result:
-        netbios.enumeration(host, filename_timestamp, is_verbose)
+        netbios_result = netbios.enumeration(host, filename_timestamp, is_verbose)
     
     if "389" in nmap_result or "ldap" in nmap_result.lower():
-        ldap.enumeration(host, filename_timestamp, is_verbose)
+        ldap_result = ldap.enumeration(host, filename_timestamp, is_verbose)
     
     if "1433" in nmap_result or "ms-sql" in nmap_result.lower() or "mssql" in nmap_result.lower():
-        mssql.enumeration(host, filename_timestamp, is_verbose)
+        mssql_result = mssql.enumeration(host, filename_timestamp, is_verbose)
     
     if "3306" in nmap_result or "mysql" in nmap_result.lower():
-        mysql.enumeration(host, filename_timestamp, is_verbose)
+        mysql_result = mysql.enumeration(host, filename_timestamp, is_verbose)
     
     if "wp" in nmap_result.lower() or "wordpress" in nmap_result.lower():
-        wpscan.scan(host, filename_timestamp, is_verbose)
+        wpscan_result = wpscan.scan(host, filename_timestamp, is_verbose)
 
 def main():
     start = time.time()
@@ -161,7 +175,7 @@ def main():
         print("\t[>] python3 scouter.py -h www.google.com -p 1-65535 --enum4linux-wordlist /usr/share/enum4linux/share-list.txt")
         exit()
 
-    auto_scan(host, port, is_default, thread, enum4linux_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
+    auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
 
 if __name__ == "__main__":
     main()
