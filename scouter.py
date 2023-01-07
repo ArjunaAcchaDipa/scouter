@@ -1,12 +1,12 @@
 import basic_command
-import dig, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, whois, wpscan
+import dig, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, whois, wpscan, dirsearch
 import ftp, ssh, pop, netbios, ldap, mssql, mysql
 
 from getopt import getopt
 import sys
 import time
 
-def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
+def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, dirsearch_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
     nmap_result = nmap.scan(host, port, filename_timestamp, is_verbose)
 
     ftp_result = ""
@@ -23,6 +23,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
     mssql_result = ""
     mysql_result = ""
     wpscan_result = ""
+    dirsearch_result = ""
 
     if "21" in nmap_result or "ftp" in nmap_result.lower():
         ftp_result = ftp.enumeration(host, is_default, filename_timestamp, ftp_wordlist, is_verbose)
@@ -35,8 +36,10 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
         dnsenum_result = dnsenum.scan(host, filename_timestamp, is_verbose)
 
         # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose)
-        directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
-        subdomain_result = gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
+        # directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
+        # subdomain_result = gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
+
+        dirsearch_result = dirsearch.scan(host, thread, is_default, filename_timestamp, dirsearch_wordlist, is_verbose)
         
         nikto_result = nikto.scan(host, filename_timestamp, is_verbose)
 
@@ -65,7 +68,7 @@ def main():
     start = time.time()
     filename_timestamp = basic_command.filename_time()
 
-    options, _ = getopt(sys.argv[1:], "h:p:t:dv", ["host", "port", "thread", "default", "verbose", "enum4linux-wordlist", "ftp-wordlist", "dir-wordlist", "subdomain-wordlist", "shodan-api", "virustotal_api"])
+    options, _ = getopt(sys.argv[1:], "h:p:t:dv", ["host", "port", "thread", "default", "verbose", "enum4linux-wordlist", "ftp-wordlist", "dir-wordlist", "subdomain-wordlist", "dirsearch-wordlist" "shodan-api", "virustotal_api"])
 
     host = ""
     port = ""
@@ -79,6 +82,8 @@ def main():
     gobuster_dir_wordlist = ""
     gobuster_subdomain_wordlist = ""
     ftp_wordlist = ""
+    dirsearch_wordlist = ""
+
 
     # API Key
     shodan_api = ""
@@ -145,14 +150,18 @@ def main():
             elif key in ["--subdomain-wordlist"]:
                 gobuster_subdomain_wordlist = value
                 # print(f"gobuster_subdomain_wordlist: {gobuster_subdomain_wordlist}")
-                
+
+            elif key in ["--dirsearch-wordlist"]:
+                dirsearch_wordlist = value
+                print(f"dirsearch_wordlist: {dirsearch_wordlist}")
+
             elif key in ["-d", "--default"]:
                 is_default = True
                 # print(f"default_wordlist: {default_wordlist}")
 
             elif key in ["-t", "--thread"]:
                 thread = value
-                # print(f"thread: {thread}")
+                print(f"thread: {thread}")
 
             elif key in ["-v", "--verbose"]:
                 is_verbose = True
@@ -175,7 +184,7 @@ def main():
         print("\t[>] python3 scouter.py -h www.google.com -p 1-65535 --enum4linux-wordlist /usr/share/enum4linux/share-list.txt")
         exit()
 
-    auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
+    auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, dirsearch_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
 
 if __name__ == "__main__":
     main()
