@@ -76,8 +76,9 @@ def main():
     start = time.time()
     filename_timestamp = basic_command.filename_time()
 
-    options, _ = getopt(sys.argv[1:], "h:p:t:dv", ["host", "port", "thread", "default", "verbose", "dirsearch-wordlist", "enum4linux-wordlist", "ftp-wordlist", "dir-wordlist", "subdomain-wordlist", "shodan-api", "virustotal_api"])
+    options, _ = getopt(sys.argv[1:], "h:p:t:dv", ["help", "host", "port", "thread", "default", "verbose", "dirsearch-wordlist", "enum4linux-wordlist", "ftp-wordlist", "dir-wordlist", "subdomain-wordlist", "shodan-api", "virustotal-api"])
 
+    is_help = False
     host = ""
     port = ""
     wordlist = ""
@@ -105,15 +106,15 @@ def main():
 
     try:
         for key, value in options:
-            if key in ["-h", "--host"]:
+            if key in ["--help"]:
+                is_help = True
+                banner.help()
+
+            elif key in ["-h", "--host"]:
                 host = value
                 is_ip, is_url = basic_command.check_ip_url(host)
                 if not is_ip and not is_url:
-                    print("[!] Invalid IP or hostname detected.")
-                    print("[-] Example:")
-                    print("\t[>] 192.168.0.1")
-                    print("\t[>] google.com")
-                    exit()
+                    print("[!] Invalid IP or URL detected.")
                 # print(f"host: {host}")
 
             elif key in ["-p", "--port"]:
@@ -136,13 +137,6 @@ def main():
                         raise
                 except:
                     print("[!] Invalid Port detected.")
-                    print("[-] Example:")
-                    print("\t[>] 80")
-                    print("\t[>] 443")
-                    print("\t[>] 1-1000")
-                    print("\t[>] 1-65535")
-                    print("\t[>] all")
-                    exit()
                 # print(f"port: {port}")
 
             elif key in ["--enum4linux-wordlist"]:
@@ -189,8 +183,10 @@ def main():
         banner.error_options()
         exit()
 
-    if host != "":
+    if host != "" and not is_help:
         auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, dirsearch_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
+    elif not is_help:
+        banner.empty_options()
 
 if __name__ == "__main__":
     main()
