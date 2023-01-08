@@ -117,8 +117,8 @@ def main():
                         else:
                             raise
                     elif "-" in port and port.count("-") == 1:
-                        for number in int(port.split("-")):
-                            if number < 1 or number > 65535:
+                        for number in port.split("-"):
+                            if int(number) < 1 or int(number) > 65535:
                                 raise
                             else:
                                 pass
