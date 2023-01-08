@@ -22,10 +22,11 @@ def scan(target, thread, is_default, current_time, is_verbose):
     return f"{result}"
 
 def default_check(is_default, thread):
-    
+    default_thread = "50"
+
     if is_default:
-        thread = "50" 
+        thread = default_thread 
     elif wordlist == "":
-        thread = input("Thread: for dirsearch: ")
+        thread = input("Thread for dirsearch: ")
     
     return thread
