@@ -1,6 +1,6 @@
 import basic_command
 
-def enumeration(target, port current_time, is_verbose):
+def enumeration(target, port, current_time, is_verbose):
     output_file = f"mysql_{target}.txt"
     output_directory = f"./result/{current_time}/"
     output = f"{output_directory}{output_file}"
