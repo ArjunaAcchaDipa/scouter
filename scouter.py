@@ -1,4 +1,4 @@
-import basic_command
+import basic_command, banner
 import dig, dirsearch, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, whois, wpscan
 import ftp, ssh, pop, netbios, ldap, mssql, mysql
 
@@ -101,6 +101,8 @@ def main():
     is_ip = False
     is_url = False
 
+    banner.banner()
+
     try:
         for key, value in options:
             if key in ["-h", "--host"]:
@@ -184,15 +186,11 @@ def main():
                 # print(f"virustotal_api: {virustotal_api}") 
 
     except:
-        print("[!] Wrong input parameter!")
-        print("[-] Example:")
-        print("\t[>] python3 scouter.py -h 192.168.0.1 -p 1-1000")
-        print("\t[>] python3 scouter.py -h www.google.com -p 1-1000")
-        print("\t[>] python3 scouter.py -h www.google.com -p all -w -v")
-        print("\t[>] python3 scouter.py -h www.google.com -p 1-65535 --enum4linux-wordlist /usr/share/enum4linux/share-list.txt")
+        banner.error_options()
         exit()
 
-    auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, dirsearch_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
+    if host != "":
+        auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, dirsearch_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
 
 if __name__ == "__main__":
     main()
