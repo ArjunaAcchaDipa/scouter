@@ -88,3 +88,6 @@ def read_file(filename):
 
 def get_data_from_env(env_data):
     return config(env_data)
+
+def get_substring(full_text, regex_used):
+    return re.findall(regex_used, full_text)

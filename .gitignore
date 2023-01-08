@@ -6,3 +6,6 @@ __pycache__/
 
 # Result folder
 result/
+
+# Test Environment
+test/
