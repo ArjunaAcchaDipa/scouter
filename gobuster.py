@@ -25,7 +25,7 @@ def default_check(target, thread, is_default, scan_type, wordlist):
     # getting data from .env file
     default_scan_directory_wordlist = "./wordlist/directory-list-2.3-medium.txt"
     default_scan_subdomain_wordlist = "./wordlist/subdomain-wordlist.txt"
-    default_thread = "10"
+    default_thread = "50"
 
     if scan_type == "directory":
         output = f"gobuster_directory_{target}.txt"
