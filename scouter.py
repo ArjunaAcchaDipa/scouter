@@ -9,6 +9,8 @@ import time
 def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
     nmap_result = nmap.scan(host, port, filename_timestamp, is_verbose)
 
+    open_ports = basic_command.get_substring(nmap_result, "\d+\/.* open .*")
+
     ftp_result = ""
     ssh_result = ""
     dig_result = ""
@@ -25,42 +27,48 @@ def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wor
     mysql_result = ""
     wpscan_result = ""
 
-    if "21" in nmap_result or "ftp" in nmap_result.lower():
-        ftp_result = ftp.enumeration(host, is_default, filename_timestamp, ftp_wordlist, is_verbose)
+    for open_port in open_ports:
+        # '80', 'tcp open  http    Apache httpd 2.4.18 ((Ubuntu))'
+        port = open_port.split("/")[0]
+        # ['80/tcp', 'open', '', 'http', '', '', '', 'Apache', 'httpd', '2.4.18', '((Ubuntu))']
+        service = open_port.split(" ")[3].lower()
 
-    if "22" in nmap_result or "ssh" in nmap_result.lower():
-        ssh_result = ssh.enumeration(host, filename_timestamp, is_verbose)
+        if service == "ftp":
+            ftp_result = ftp.enumeration(host, is_default, filename_timestamp, ftp_wordlist, is_verbose)
 
-    if "80" in nmap_result or "443" in nmap_result or "http" in nmap_result.lower():
-        dig_result = dig.scan(host, filename_timestamp, is_verbose)
-        dnsenum_result = dnsenum.scan(host, filename_timestamp, is_verbose)
+        if service == "ssh":
+            ssh_result = ssh.enumeration(host, port, filename_timestamp, is_verbose)
 
-        # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose)
-        directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
-        subdomain_result = gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
+        if "http" in service:
+            dig_result = dig.scan(host, filename_timestamp, is_verbose)
+            dnsenum_result = dnsenum.scan(host, filename_timestamp, is_verbose)
 
-        dirsearch_result = dirsearch.scan(host, thread, is_default, filename_timestamp, dirsearch_wordlist, is_verbose)
+            # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose)
+            directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
+            subdomain_result = gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
+
+            dirsearch_result = dirsearch.scan(host, thread, is_default, filename_timestamp, dirsearch_wordlist, is_verbose)
+            
+            nikto_result = nikto.scan(host, filename_timestamp, is_verbose)
+
+        if "pop" in service:
+            pop_result = pop.enumeration(host, port, filename_timestamp, is_verbose)
+
+        if service == "netbios-ssn" or service == "microsoft-ds":
+            enum4linux_result = enum4linux.scan(host, is_default, filename_timestamp, enum4linux_wordlist, is_verbose)
         
-        nikto_result = nikto.scan(host, filename_timestamp, is_verbose)
-
-    if "110" in nmap_result or "pop" in nmap_result.lower():
-        pop_result = pop.enumeration(host, filename_timestamp, is_verbose)
-
-    if "135" in nmap_result or "139" in nmap_result or "445" in nmap_result or "smb" in nmap_result.lower() or "samba" in nmap_result.lower():
-        enum4linux_result = enum4linux.scan(host, is_default, filename_timestamp, enum4linux_wordlist, is_verbose)
-    
-    if "137" in nmap_result or "138" in nmap_result:
-        netbios_result = netbios.enumeration(host, filename_timestamp, is_verbose)
-    
-    if "389" in nmap_result or "ldap" in nmap_result.lower():
-        ldap_result = ldap.enumeration(host, filename_timestamp, is_verbose)
-    
-    if "1433" in nmap_result or "ms-sql" in nmap_result.lower() or "mssql" in nmap_result.lower():
-        mssql_result = mssql.enumeration(host, filename_timestamp, is_verbose)
-    
-    if "3306" in nmap_result or "mysql" in nmap_result.lower():
-        mysql_result = mysql.enumeration(host, filename_timestamp, is_verbose)
-    
+        if service == "microsoft-ns" or service == "microsoft-dgm" or service == "netbios-ssn":
+            netbios_result = netbios.enumeration(host, port, filename_timestamp, is_verbose)
+        
+        if service == "ldap":
+            ldap_result = ldap.enumeration(host, port, filename_timestamp, is_verbose)
+        
+        if "ms-sql" in service or "mssql" in service:
+            mssql_result = mssql.enumeration(host, port, filename_timestamp, is_verbose)
+        
+        if service == "mysql":
+            mysql_result = mysql.enumeration(host, port, filename_timestamp, is_verbose)
+        
     if "wp" in nmap_result.lower() or "wordpress" in nmap_result.lower():
         wpscan_result = wpscan.scan(host, filename_timestamp, is_verbose)
 
