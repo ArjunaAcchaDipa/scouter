@@ -1,13 +1,14 @@
 import basic_command
 
 def scan(target, current_time, is_verbose):
-    output_file = f"whois_{target}.txt"
+    output_file = f"wafw00f_{target}.txt"
     output_directory = f"./result/{target}/{current_time}/"
     output = f"{output_directory}{output_file}"
 
     basic_command.mkdir(output_directory)
 
-    basic_command.run_command(f"whois {target} {basic_command.verbose_level(is_verbose)} {output}")
+    #target must be specific or they gonna use 443/https
+    basic_command.run_command(f"wafw00f {target} -a {basic_command.verbose_level(is_verbose)} {output}")
 
     result = basic_command.read_file(f"{output}")
 

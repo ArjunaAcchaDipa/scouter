@@ -3,7 +3,7 @@ import basic_command
 def enumeration(target, is_default, current_time, wordlist, is_verbose):
     output_response = f"ftp_response_{target}.txt"
     output_html = f"ftp_html_{target}.txt"
-    output_directory = f"./result/{current_time}/"
+    output_directory = f"./result/{target}/{current_time}/"
     output = f"{output_directory}{output_response}"
 
     basic_command.mkdir(output_directory)
