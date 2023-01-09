@@ -25,7 +25,9 @@ def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wor
     ldap_result = ""
     mssql_result = ""
     mysql_result = ""
+    wafw00f_result = ""
     wpscan_result = ""
+
 
     for open_port in open_ports:
         # '80', 'tcp open  http    Apache httpd 2.4.18 ((Ubuntu))'
@@ -50,6 +52,8 @@ def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wor
             dirsearch_result = dirsearch.scan(host, thread, is_default, filename_timestamp, dirsearch_wordlist, is_verbose)
             
             nikto_result = nikto.scan(host, filename_timestamp, is_verbose)
+
+            wafw00f_result = wafw00f.scan(host, service, filename_timestamp, is_verbose)
 
         if "pop" in service:
             pop_result = pop.enumeration(host, port, filename_timestamp, is_verbose)
