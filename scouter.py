@@ -20,7 +20,6 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
 
     ftp_result = ""
     ssh_result = ""
-    dig_result = ""
     dirsearch_result = ""
     dnsenum_result = ""
     directory_result = ""
