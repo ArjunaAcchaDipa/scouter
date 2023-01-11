@@ -35,3 +35,5 @@ def parsing_data(nmap_result):
         os_host = "".join(basic_command.get_substring("OS: \w+", nmap_result)).split(" ")[1].rstrip(";")
     except:
         os_host = "unknown host"
+    
+    return os_host
