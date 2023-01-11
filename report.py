@@ -17,10 +17,11 @@ def write_to_docx(host, os_host, current_date, tools_used, total_services, servi
     document = MailMerge(template)
 
     document.merge(
-        host_docx = os_host,
+        host_docx = host,
+        os_host_docx = os_host,
         current_date_docx = current_date,
         version_docx = basic_command.get_data_from_env("document_version"),
-        company_docx = basic_command.get_data_from_env("company"),
+        company_name_docx = basic_command.get_data_from_env("company"),
         tools_used_docx = tools_used,
         total_services_docx = total_services,
         services_docx = services,
