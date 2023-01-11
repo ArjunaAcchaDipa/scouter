@@ -15,10 +15,13 @@ def scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbo
     # -t    --> thread
     # -k    --> Skip TLS certificate verification
     
-    basic_command.run_command(f"gobuster {mode} -u {target} -w {wordlist} -t {thread} -k {basic_command.verbose_level(is_verbose)} {output}")
+    basic_command.run_command(f"gobuster {mode} -u {target} -w {wordlist} -t {thread} -k > {output}")
 
     result = basic_command.read_file(f"{output}")
 
+    if is_verbose:
+        print (result)
+        
     return f"{result}"
 
 def default_check(target, thread, is_default, scan_type, wordlist):
