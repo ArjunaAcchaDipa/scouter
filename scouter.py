@@ -84,7 +84,7 @@ def main():
     start = time.time()
     filename_timestamp = basic_command.filename_time()
 
-    options, _ = getopt(sys.argv[1:], "h:p:t:dv", ["help", "host", "port", "thread", "default", "verbose", "dirsearch-wordlist", "enum4linux-wordlist", "ftp-wordlist", "dir-wordlist", "subdomain-wordlist", "shodan-api", "virustotal-api"])
+    options, _ = getopt(sys.argv[1:], "h:p:t:dv", ["help", "host=", "port=", "thread=", "default", "verbose", "dirsearch-wordlist=", "enum4linux-wordlist=", "ftp-wordlist=", "dir-wordlist=", "subdomain-wordlist=", "shodan-api=", "virustotal-api="])
 
     is_help = False
     host = ""
