@@ -1,5 +1,5 @@
 import basic_command, banner, report
-import dig, dirsearch, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, whois, wpscan
+import dig, dirsearch, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, wafw00f, whois, wpscan
 import ftp, ssh, pop, netbios, ldap, mssql, mysql
 
 from getopt import getopt
