@@ -1,6 +1,5 @@
 import basic_command
 from mailmerge import MailMerge
-from docx2pdf import convert
 
 import nmap
 
@@ -8,6 +7,8 @@ def auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, vi
     tools_used, current_date, total_services, services = parsing_summary(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
     os_host = nmap.parsing_data(nmap_result)
+
+    nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result = empty_check(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
     write_to_docx(host, os_host, current_date, tools_used, total_services, services, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
@@ -51,8 +52,6 @@ def write_to_docx(host, os_host, current_date, tools_used, total_services, servi
     )
     document.write(result_filename)
 
-    convert_to_pdf(result_filename)
-
 def parsing_summary(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
     tools_used = basic_command.get_tools_used(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
     current_date = basic_command.current_date()
@@ -69,6 +68,68 @@ def parsing_summary(nmap_result, dig_result, dnsenum_result, gdorks_result, viru
 
     return tools_used, current_date, total_services, services
     
-def convert_to_pdf(filename):
-    pdf_filename = f"{filename.rstrip('.docx')}.pdf"
-    convert(filename, pdf_filename)
+def empty_check(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
+    if nmap_result == "":
+        nmap_result = "Service is not detected"
+
+    if dig_result == "":
+        dig_result = "Service is not detected"
+
+    if dnsenum_result == "":
+        dnsenum_result = "Service is not detected"
+
+    if gdorks_result == "":
+        gdorks_result = "Service is not detected"
+
+    if virustotal_result == "":
+        virustotal_result = "Service is not detected"
+
+    if searchsploit_result == "":
+        searchsploit_result = "Service is not detected"
+
+    if whois_result == "":
+        whois_result = "Service is not detected"
+
+    if ftp_result == "":
+        ftp_result = "Service is not detected"
+
+    if ssh_result == "":
+        ssh_result = "Service is not detected"
+
+    if dirsearch_result == "":
+        dirsearch_result = "Service is not detected"
+
+    if directory_result == "":
+        directory_result = "Service is not detected"
+
+    if subdomain_result == "":
+        subdomain_result = "Service is not detected"
+
+    if nikto_result == "":
+        nikto_result = "Service is not detected"
+
+    if wafw00f_result == "":
+        wafw00f_result = "Service is not detected"
+
+    if pop_result == "":
+        pop_result = "Service is not detected"
+
+    if enum4linux_result == "":
+        enum4linux_result = "Service is not detected"
+
+    if netbios_result == "":
+        netbios_result = "Service is not detected"
+
+    if ldap_result == "":
+        ldap_result = "Service is not detected"
+
+    if mssql_result == "":
+        mssql_result = "Service is not detected"
+
+    if mysql_result == "":
+        mysql_result = "Service is not detected"
+
+    if wpscan_result == "":
+        wpscan_result = "Service is not detected"
+
+    return nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result
