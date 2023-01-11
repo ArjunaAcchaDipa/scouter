@@ -3,7 +3,7 @@ import basic_command
 def scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose):
     # check default variable(s)
     output_file, thread, mode, wordlist = default_check(target, thread, is_default, scan_type, wordlist)
-    output_directory = f"./result/{current_time}/"
+    output_directory = f"./result/{target}/{current_time}/"
     output = f"{output_directory}{output_file}"
 
     basic_command.mkdir(output_directory)

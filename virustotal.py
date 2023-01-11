@@ -3,7 +3,7 @@ import base64
 
 def scan(target, api_key, current_time, is_verbose):
     output_file = f"virustotal_{target}.txt"
-    output_directory = f"./result/{current_time}/"
+    output_directory = f"./result/{target}/{current_time}/"
     output = f"{output_directory}{output_file}"
 
     basic_command.mkdir(output_directory)
