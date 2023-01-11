@@ -53,12 +53,6 @@ def check_ip_url(host):
     
     return is_ip, is_url
 
-def verbose_level(isVerbose):
-    if isVerbose:
-        return "| tee"
-    else:
-        return ">"
-
 def read_file(filename):
     f = open(filename, "r")
     result = f.read()
