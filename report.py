@@ -1,5 +1,6 @@
 import basic_command
 from mailmerge import MailMerge
+from docx2pdf import convert
 
 import nmap
 
@@ -12,6 +13,7 @@ def auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, vi
 
 def write_to_docx(host, os_host, current_date, tools_used, total_services, services, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
     template = "template_report.docx"
+    result_filename = f"{host} Reconnaissance Report - {current_date}.docx"
     document = MailMerge(template)
 
     document.merge(
@@ -45,7 +47,9 @@ def write_to_docx(host, os_host, current_date, tools_used, total_services, servi
         mssql_docx = mssql_result,
         mysql_docx = mysql_result
     )
-    document.write(f"{host} Reconnaissance Report - {current_date}.docx")
+    document.write(result_filename)
+
+    convert_to_pdf(result_filename)
 
 def parsing_summary(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
     tools_used = basic_command.get_tools_used(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
@@ -63,4 +67,6 @@ def parsing_summary(nmap_result, dig_result, dnsenum_result, gdorks_result, viru
 
     return tools_used, current_date, total_services, services
     
-    
+def convert_to_pdf(filename):
+    pdf_filename = f"{filename.rstrip('.docx')}.pdf"
+    convert(filename, pdf_filename)

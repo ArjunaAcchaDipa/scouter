@@ -126,6 +126,7 @@ def main():
                 is_ip, is_url = basic_command.check_ip_url(host)
                 if not is_ip and not is_url:
                     print("[!] Invalid IP or URL detected.")
+                    exit()
                 # print(f"host: {host}")
 
             elif key in ["-p", "--port"]:
@@ -144,10 +145,13 @@ def main():
                                 raise
                             else:
                                 pass
+                    elif "," in port:
+                        pass
                     else:
                         raise
                 except:
                     print("[!] Invalid Port detected.")
+                    exit()
                 # print(f"port: {port}")
 
             elif key in ["--enum4linux-wordlist"]:

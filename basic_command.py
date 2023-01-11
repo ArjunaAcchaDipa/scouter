@@ -63,7 +63,13 @@ def read_file(filename):
     f = open(filename, "r")
     result = f.read()
     f.close()
-    return result
+
+    try:
+        ansi_escape = re.compile(r"(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]")
+
+        return ansi_escape.sub("", result)
+    except:
+        return result
 
 def get_data_from_env(env_data):
     return config(env_data)
