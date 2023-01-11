@@ -15,10 +15,13 @@ def scan(target, thread, is_default, current_time, is_verbose):
     # -e    --> extension
     # -x    --> exclude status-code
 
-    basic_command.run_command(f"dirsearch -u {target} -e php,html,js,txt,sql -t {thread} -r -x 402-999 {basic_command.verbose_level(is_verbose)} {output}")
+    basic_command.run_command(f"dirsearch -u {target} -e php,html,js,txt,sql -t {thread} -r -x 402-999 > {output}")
 
     result = basic_command.read_file(f"{output}")
 
+    if is_verbose:
+        print (result)
+        
     return f"{result}"
 
 def default_check(is_default, thread):

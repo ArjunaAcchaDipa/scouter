@@ -14,10 +14,13 @@ def scan(target, is_default, current_time, wordlist, is_verbose):
     # -s --> brute force share names
     # -U --> get userlist
 
-    basic_command.run_command(f"enum4linux -n -P -s {wordlist} -U {target} {basic_command.verbose_level(is_verbose)} {output}")
+    basic_command.run_command(f"enum4linux -n -P -s {wordlist} -U {target} > {output}")
 
     result = basic_command.read_file(f"{output}")
 
+    if is_verbose:
+        print (result)
+        
     return f"{result}"
 
 def default_check(is_default, wordlist):

@@ -7,8 +7,11 @@ def scan(target, current_time, is_verbose):
 
     basic_command.mkdir(output_directory)
 
-    basic_command.run_command(f"wpscan --url {target} -e {basic_command.verbose_level(is_verbose)} {output}")
+    basic_command.run_command(f"wpscan --url {target} -e > {output}")
 
     result = basic_command.read_file(f"{output}")
-
+    
+    if is_verbose:
+        print (result)
+    
     return f"{result}"
