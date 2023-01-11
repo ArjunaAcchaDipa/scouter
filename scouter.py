@@ -13,6 +13,8 @@ def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wor
     dnsenum_result = dnsenum.scan(host, filename_timestamp, is_verbose)
     gdorks_result = google.dorks(host, filename_timestamp, is_verbose)
     virustotal_result = virustotal.scan(host, virustotal_api, filename_timestamp, is_verbose)
+    searchsploit_result = searchsploit.scan(host, filename_timestamp, is_verbose)
+    whois_result = whois.scan(host, filename_timestamp, is_verbose)
 
     open_ports = basic_command.get_substring("\d+\/.* open .*", nmap_result)        
 
@@ -79,7 +81,7 @@ def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wor
     if "wp" in nmap_result.lower() or "wordpress" in nmap_result.lower():
         wpscan_result = wpscan.scan(host, filename_timestamp, is_verbose)
 
-    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
+    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
 def main():
     start = time.time()
