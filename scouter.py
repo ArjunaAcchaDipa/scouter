@@ -6,7 +6,7 @@ from getopt import getopt
 import sys
 import time
 
-def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
+def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, dirsearch_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
     # initial data
     nmap_result = nmap.scan(host, port, filename_timestamp, is_verbose)
     dig_result = dig.scan(host, filename_timestamp, is_verbose)
@@ -34,7 +34,6 @@ def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wor
     mysql_result = ""
     wafw00f_result = ""
     wpscan_result = ""
-
 
     for open_port in open_ports:
         # '80', 'tcp open  http    Apache httpd 2.4.18 ((Ubuntu))'
