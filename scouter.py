@@ -41,15 +41,15 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
         # ['80/tcp', 'open', '', 'http', '', '', '', 'Apache', 'httpd', '2.4.18', '((Ubuntu))']
         service = open_port.split(" ")[3].lower()
 
-        if service == "ftp":
+        if service == "ftp" and ftp_result == "":
             ftp_result = ftp.enumeration(host, is_default, filename_timestamp, ftp_wordlist, is_verbose)
 
-        if service == "ssh":
+        if service == "ssh" and ssh_result == "":
             ssh_result = ssh.enumeration(host, port, filename_timestamp, is_verbose)
 
-        if "http" in service:
+        if "http" in service and directory_result == "":
 
-            # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose)
+            # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose and directory_result == "")
             directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
             subdomain_result = gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
 
@@ -59,28 +59,28 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
 
             wafw00f_result = wafw00f.scan(host, service, filename_timestamp, is_verbose)
 
-        if "pop" in service:
+        if "pop" in service and pop_result == "":
             pop_result = pop.enumeration(host, port, filename_timestamp, is_verbose)
 
-        if service == "netbios-ssn" or service == "microsoft-ds":
+        if (service == "netbios-ssn" or service == "microsoft-ds") and enum4linux_result == "":
             enum4linux_result = enum4linux.scan(host, is_default, filename_timestamp, enum4linux_wordlist, is_verbose)
         
-        if service == "microsoft-ns" or service == "microsoft-dgm" or service == "netbios-ssn":
+        if (service == "microsoft-ns" or service == "microsoft-dgm" or service == "netbios-ssn") and netbios_result == "":
             netbios_result = netbios.enumeration(host, port, filename_timestamp, is_verbose)
         
-        if service == "ldap":
+        if service == "ldap" and ldap_result == "":
             ldap_result = ldap.enumeration(host, port, filename_timestamp, is_verbose)
         
-        if "ms-sql" in service or "mssql" in service:
+        if ("ms-sql" in service or "mssql" in service) and mssql_result == "":
             mssql_result = mssql.enumeration(host, port, filename_timestamp, is_verbose)
         
-        if service == "mysql":
+        if service == "mysql" and mysql_result == "":
             mysql_result = mysql.enumeration(host, port, filename_timestamp, is_verbose)
         
-    if "wp" in nmap_result.lower() or "wordpress" in nmap_result.lower():
+    if ("wp" in nmap_result.lower() or "wordpress") in nmap_result.lower():
         wpscan_result = wpscan.scan(host, filename_timestamp, is_verbose)
 
-    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
+    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
 def main():
     start = time.time()
@@ -91,7 +91,6 @@ def main():
     is_help = False
     host = ""
     port = ""
-    wordlist = ""
     thread = 10
     is_default = False
     is_verbose = False
