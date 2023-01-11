@@ -29,3 +29,9 @@ def default_check(port):
         return "1-65535"
     else:
         return port
+
+def parsing_data(nmap_result):
+    try:
+        os_host = "".join(basic_command.get_substring("OS: \w+", nmap_result)).split(" ")[1].rstrip(";")
+    except:
+        os_host = "unknown host"

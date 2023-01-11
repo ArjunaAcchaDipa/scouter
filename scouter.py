@@ -1,4 +1,4 @@
-import basic_command, banner
+import basic_command, banner, report
 import dig, dirsearch, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, whois, wpscan
 import ftp, ssh, pop, netbios, ldap, mssql, mysql
 
@@ -7,9 +7,14 @@ import sys
 import time
 
 def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
+    # initial data
     nmap_result = nmap.scan(host, port, filename_timestamp, is_verbose)
+    dig_result = dig.scan(host, filename_timestamp, is_verbose)
+    dnsenum_result = dnsenum.scan(host, filename_timestamp, is_verbose)
+    gdorks_result = google.dorks(host, filename_timestamp, is_verbose)
+    virustotal_result = virustotal.scan(host, virustotal_api, filename_timestamp, is_verbose)
 
-    open_ports = basic_command.get_substring(nmap_result, "\d+\/.* open .*")
+    open_ports = basic_command.get_substring("\d+\/.* open .*", nmap_result)        
 
     ftp_result = ""
     ssh_result = ""
@@ -40,8 +45,6 @@ def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wor
             ssh_result = ssh.enumeration(host, port, filename_timestamp, is_verbose)
 
         if "http" in service:
-            dig_result = dig.scan(host, filename_timestamp, is_verbose)
-            dnsenum_result = dnsenum.scan(host, filename_timestamp, is_verbose)
 
             # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose)
             directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
@@ -71,6 +74,8 @@ def auto_scan(host, port, is_default, thread, dirsearch_wordlist, enum4linux_wor
         
     if "wp" in nmap_result.lower() or "wordpress" in nmap_result.lower():
         wpscan_result = wpscan.scan(host, filename_timestamp, is_verbose)
+
+    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
 def main():
     start = time.time()

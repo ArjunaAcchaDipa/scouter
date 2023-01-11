@@ -15,31 +15,10 @@ def colors(color):
     elif color == "normal":
         return "\033[0m"
 
-def gobuster_parse_command(command):
-    host = ""
-    thread = 10
-    wordlist = "/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"
-
-    options, _ = getopt(sys.argv[1:], "h:t:w:", ["host", "thread", "wordlist"])
-
-    for key, value in options:
-        if key in ["-h", "--host"]:
-            host = value
-        elif key in ["-t", "--thread"]:
-            thread = value
-        elif key in ["-w", "--wordlist"]:
-            wordlist = value
-    
-    # locate wordlist and validate thread and host is valid
-
 def run_command(command):
-    print("run command")
-    print(command)
     process = subprocess.Popen(args=command, stderr=subprocess.PIPE, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
 
     result, error = process.communicate()
-
-    print("command done running")
 
     if error != b"":
         return f"Error\n{error}"
@@ -49,15 +28,17 @@ def run_command(command):
         return ""
 
 def mkdir(directory_location):
-    print(f"[+] Creating directory for {directory_location}")
     result = run_command(f"mkdir -p {directory_location}")
     if (result.startswith("Error")):
         print(f"[!] There is something wrong - {result}")
     else:
-        print(f"[+] The directory has been created!")
+        pass
 
 def filename_time():
-    return time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    return time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
+
+def current_date():
+    return time.strftime("%B %d, %Y", time.localtime())
 
 def check_ip_url(host):
     # regex below to validate the host is in ip format or not
@@ -89,5 +70,68 @@ def read_file(filename):
 def get_data_from_env(env_data):
     return config(env_data)
 
-def get_substring(full_text, regex_used):
+def get_substring(regex_used, full_text):
     return re.findall(regex_used, full_text)
+
+def get_tools_used(nmap_result, ftp_result, ssh_result, dig_result, dirsearch_result, dnsenum_result, directory_result, subdomain_result, nikto_result, pop_result, enum4linux_result, netbios_result, gdorks_result, virustotal_result, ldap_result, mssql_result, mysql_result, wpscan_result):
+    tools = []
+
+    if nmap_result != "":
+        tools.append("nmap")
+
+    if ftp_result != "":
+        tools.append("ftp")
+
+    if ssh_result != "":
+        tools.append("ssh")
+
+    if dig_result != "" or dnsenum_result != "":
+        tools.append("dns lookup")
+
+    if directory_result != "" or dirsearch_result != "":
+        tools.append("directory scan")
+
+    if subdomain_result != "":
+        tools.append("subdomain scan")
+
+    if nikto_result != "":
+        tools.append("nikto")
+
+    if pop_result != "":
+        tools.append("pop")
+
+    if enum4linux_result != "":
+        tools.append("enum4linux")
+
+    if netbios_result != "":
+        tools.append("netbios")
+
+    if gdorks_result != "":
+        tools.append("google dorks")
+    
+    if virustotal_result != "":
+        tools.append("virustotal")
+
+    if ldap_result != "":
+        tools.append("ldap")
+
+    if mssql_result != "":
+        tools.append("mssql")
+
+    if mysql_result != "":
+        tools.append("mysql")
+
+    if wpscan_result != "":
+        tools.append("wpscan")
+
+    tools_used = ""
+    for index in range (len(tools)):
+        tools_used += tools[index]
+        if index + 2 == len(tools):
+            tools_used += ", and "
+        elif index + 1 == len(tools):
+            pass
+        else:
+            tools_used += ", "
+
+    return tools_used

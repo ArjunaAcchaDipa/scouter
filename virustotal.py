@@ -1,13 +1,14 @@
 import basic_command
 import base64
 
-def scan(target, is_ip, is_url, api_key, current_time, is_verbose):
+def scan(target, api_key, current_time, is_verbose):
     output_file = f"virustotal_{target}.txt"
     output_directory = f"./result/{current_time}/"
     output = f"{output_directory}{output_file}"
 
     basic_command.mkdir(output_directory)
 
+    is_ip, is_url = basic_command.check_ip_url(target)
     api_key = default_check(api_key)
 
     if is_url and not is_ip:
