@@ -63,7 +63,7 @@ def parsing_summary(nmap_result, dig_result, dnsenum_result, gdorks_result, viru
         port = open_port.split("/")[0]
         service = open_port.split(" ")[3].lower()
 
-        services = f"{service} in port {port},"
+        services += f"{service} in port {port},"
     
     services.rstrip(",")
 
