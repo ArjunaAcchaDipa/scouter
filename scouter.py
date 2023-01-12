@@ -6,7 +6,7 @@ from getopt import getopt
 import sys
 import time
 
-def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, dirsearch_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose):
+def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist,  shodan_api, virustotal_api, filename_timestamp, is_verbose):
     # initial data
     nmap_result = nmap.scan(host, port, filename_timestamp, is_verbose)
     dig_result = dig.scan(host, filename_timestamp, is_verbose)
@@ -51,7 +51,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
             directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
             subdomain_result = gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
 
-            dirsearch_result = dirsearch.scan(host, thread, is_default, filename_timestamp, dirsearch_wordlist, is_verbose)
+            dirsearch_result = dirsearch.scan(host, thread, is_default, filename_timestamp, is_verbose)
             
             nikto_result = nikto.scan(host, filename_timestamp, is_verbose)
 
@@ -94,7 +94,6 @@ def main():
     is_verbose = False
 
     # Wordlist
-    dirsearch_wordlist = ""
     enum4linux_wordlist = ""
     gobuster_dir_wordlist = ""
     gobuster_subdomain_wordlist = ""
@@ -166,10 +165,6 @@ def main():
                 gobuster_subdomain_wordlist = value
                 # print(f"gobuster_subdomain_wordlist: {gobuster_subdomain_wordlist}")
 
-            elif key in ["--dirsearch-wordlist"]:
-                dirsearch_wordlist = value
-                # print(f"dirsearch_wordlist: {dirsearch_wordlist}")
-
             elif key in ["-d", "--default"]:
                 is_default = True
                 # print(f"default_wordlist: {default_wordlist}")
@@ -195,7 +190,7 @@ def main():
         exit()
 
     if host != "" and not is_help:
-        auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, dirsearch_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
+        auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist, gobuster_dir_wordlist, gobuster_subdomain_wordlist, shodan_api, virustotal_api, filename_timestamp, is_verbose)
     elif not is_help:
         banner.empty_options()
 
