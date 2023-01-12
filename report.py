@@ -10,7 +10,9 @@ def auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, vi
 
     nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result = empty_check(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
-    write_to_docx(host, os_host, current_date, tools_used, total_services, services, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
+    result_filename = write_to_docx(host, os_host, current_date, tools_used, total_services, services, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
+
+    convert_docx_to_pdf(result_filename)
 
 def write_to_docx(host, os_host, current_date, tools_used, total_services, services, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
     template = "template_report.docx"
@@ -51,6 +53,8 @@ def write_to_docx(host, os_host, current_date, tools_used, total_services, servi
         mysql_docx = mysql_result
     )
     document.write(result_filename)
+
+    return result_filename
 
 def parsing_summary(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
     tools_used = basic_command.get_tools_used(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
@@ -133,3 +137,8 @@ def empty_check(nmap_result, dig_result, dnsenum_result, gdorks_result, virustot
         wpscan_result = "Service is not detected"
 
     return nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result
+
+def convert_docx_to_pdf(result_filename):
+    pdf_filename = result_filename.rstrip(".docx") + ".pdf"
+
+    basic_command.run_command(f"abiword {result_filename} -t pdf -o {pdf_filename}")
