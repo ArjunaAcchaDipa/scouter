@@ -37,5 +37,7 @@ sudo gem install wpscan
 sudo apt install abiword -y
 
 # Give recommendation to close and re-open terminal
+echo -e "\n\nRun this command in terminal:"
+echo "export PATH=$PATH:~/go/bin"
 echo -e "\nTools already installed"
 echo "Try to re-open the terminal"
