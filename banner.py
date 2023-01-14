@@ -8,7 +8,7 @@ def banner():
     print("")
 
 def help():
-    print("Usage: python3 scouter.py [IP / URL] [Options]")
+    print("Usage: python3 scouter.py -h [IP / URL] [Options]")
     
     print("")
     print("   -h, --host\tThe target IP or URL")
@@ -16,11 +16,10 @@ def help():
     print("      Ex: -p 80; -p 1-1000; -p 1-65535; -p all")
 
     print("   -t, --thread\tNumber of concurrent threads (default 50)")
-    print("       --dirsearch-wordlist\tPath to the dirsearch wordlist")
     print("       --enum4linux-wordlist\tPath to the enum4linux wordlist")
     print("       --ftp-wordlist\tPath to the FTP wordlist")
-    print("       --dir-wordlist\tPath to the Gobuster Dir wordlist")
-    print("       --subdomain-wordlist\tPath to the Gobuster Subdomain wordlist")
+    print("       --dir-wordlist\tPath to the Directory Scan wordlist")
+    print("       --subdomain-wordlist\tPath to the Subdomain Scan wordlist")
     print("       --shodan-api\tThe Shodan API Token")
     print("       --virustotal-api\tThe VirusTotal API Token")
 
@@ -34,14 +33,14 @@ def error_options():
     print("[-] Example:")
     print("   [>] python3 scouter.py -h 192.168.0.1 -p 1-1000")
     print("   [>] python3 scouter.py -h www.google.com -p 1-1000")
-    print("   [>] python3 scouter.py -h www.google.com -p all -w -v")
+    print("   [>] python3 scouter.py -h www.google.com -p all -v")
     print("   [>] python3 scouter.py -h www.google.com -p 1-65535 --enum4linux-wordlist /usr/share/enum4linux/share-list.txt")
 
 def empty_options():
     print("[-] Example:")
     print("   [>] python3 scouter.py -h 192.168.0.1 -p 1-1000")
     print("   [>] python3 scouter.py -h www.google.com -p 1-1000")
-    print("   [>] python3 scouter.py -h www.google.com -p all -w -v")
+    print("   [>] python3 scouter.py -h www.google.com -p all -v")
     print("   [>] python3 scouter.py -h www.google.com -p 1-65535 --enum4linux-wordlist /usr/share/enum4linux/share-list.txt")
     print("")
     print("[-] Auto Run:")
