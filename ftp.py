@@ -17,6 +17,9 @@ def enumeration(target, is_default, current_time, wordlist, is_verbose):
 
         if "Logged in" in result:
             break
+    
+    if "Logged in" not in result:
+        result = "No credential matched"
 
     return f"{result}"
 

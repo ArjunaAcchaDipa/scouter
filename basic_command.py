@@ -19,7 +19,7 @@ def run_command(command):
     result, error = process.communicate()
 
     if error != b"":
-        return f"Error\n{error}"
+        return f"Error\n{error.decode()}"
     elif result != b"":
         return result.decode()
     elif result == b"":
