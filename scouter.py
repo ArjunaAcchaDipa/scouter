@@ -1,5 +1,5 @@
 import basic_command, banner, report
-import dig, dirsearch, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, wafw00f, whatweb, whois, wpscan
+import dig, dirsearch, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan_scan, virustotal, wafw00f, whatweb, whois, wpscan
 import ftp, ssh, pop, netbios, ldap, mssql, mysql
 
 from getopt import getopt
@@ -13,6 +13,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
     dnsenum_result = dnsenum.scan(host, filename_timestamp, is_verbose)
     gdorks_result = google.dorks(host, filename_timestamp, is_verbose)
     virustotal_result = virustotal.scan(host, virustotal_api, filename_timestamp, is_verbose)
+    shodan_result = shodan_scan.scan(host, shodan_api, filename_timestamp, is_verbose)
     searchsploit_result = searchsploit.scan(host, filename_timestamp, is_verbose)
     whois_result = whois.scan(host, filename_timestamp, is_verbose)
 
@@ -49,7 +50,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
         if "http" in service and directory_result == "":
             whatweb_result = whatweb.scan(host, filename_timestamp, is_verbose)
 
-            # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose and directory_result == "")
+            # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose)
             directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
             subdomain_result = gobuster.scan(host, thread, is_default, filename_timestamp, "subdomain", gobuster_subdomain_wordlist, is_verbose)
 
@@ -80,7 +81,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
     if ("wp" in nmap_result.lower() or "wordpress") in nmap_result.lower():
         wpscan_result = wpscan.scan(host, filename_timestamp, is_verbose)
 
-    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
+    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, shodan_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
 def main():
     start = time.time()

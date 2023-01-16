@@ -1,0 +1,61 @@
+import basic_command
+import shodan
+
+def scan(search_query, api_key, current_time, is_verbose):
+    output_file = f"shodan_{search_query}.txt"
+    output_directory = f"./result/{search_query}/{current_time}/"
+    output = f"{output_directory}{output_file}"
+
+    results = ""
+
+    FACETS = [
+        'org',
+        'domain',
+        'port',
+        ('country', 5),
+    ]
+
+    FACET_TITLES = {
+        'org': 'Top 5 Organizations',
+        'domain': 'Top 5 Domains',
+        'port': 'Top 5 Ports',
+        'country': 'Top 5 Countries',
+    }
+
+    basic_command.mkdir(output_directory)
+
+    api_key = default_check(api_key)
+
+    if is_verbose:
+        print("[+] Running Shodan scan")
+
+    try:
+        # Setup the api
+        api = shodan.Shodan(api_key)
+
+        result = api.count(search_query, facets=FACETS)
+
+        for facet in result['facets']:
+            results += f"{FACET_TITLES[facet]}\n"
+
+            for term in result['facets'][facet]:
+                results += f"{term['value']}: {term['count']}\n"
+
+            results += "\n"
+        
+        results = results.rstrip("\n")
+
+        basic_command.run_command(f"echo '{results}' > {output}")
+
+        if is_verbose:
+            print(results)
+
+    except Exception as e:
+        print(f"Error:\n{e}")
+        exit(1)
+    
+def default_check(api_key):
+    if api_key == "":
+        api_key = input("API Key for Shodan: ")
+    
+    return api_key
