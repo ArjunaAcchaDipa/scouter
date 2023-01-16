@@ -1,5 +1,5 @@
 import basic_command, banner, report
-import dig, dirsearch, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, wafw00f, whois, wpscan
+import dig, dirsearch, dnsenum, enum4linux, gobuster, nikto, nmap, google, searchsploit, shodan, virustotal, wafw00f, whatweb, whois, wpscan
 import ftp, ssh, pop, netbios, ldap, mssql, mysql
 
 from getopt import getopt
@@ -31,6 +31,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
     mssql_result = ""
     mysql_result = ""
     wafw00f_result = ""
+    whatweb_result = ""
     wpscan_result = ""
 
     for open_port in open_ports:
@@ -46,6 +47,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
             ssh_result = ssh.enumeration(host, port, filename_timestamp, is_verbose)
 
         if "http" in service and directory_result == "":
+            whatweb_result = whatweb.scan(host, filename_timestamp, is_verbose)
 
             # gobuster.scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbose and directory_result == "")
             directory_result = gobuster.scan(host, thread, is_default, filename_timestamp, "directory", gobuster_dir_wordlist, is_verbose)
@@ -78,7 +80,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
     if ("wp" in nmap_result.lower() or "wordpress") in nmap_result.lower():
         wpscan_result = wpscan.scan(host, filename_timestamp, is_verbose)
 
-    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
+    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
 def main():
     start = time.time()

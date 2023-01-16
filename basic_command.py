@@ -71,7 +71,7 @@ def get_data_from_env(env_data):
 def get_substring(regex_used, full_text):
     return re.findall(regex_used, full_text)
 
-def get_tools_used(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
+def get_tools_used(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, searchsploit_result, whois_result, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
     tools = []
 
     if nmap_result != "":
@@ -97,6 +97,9 @@ def get_tools_used(nmap_result, dig_result, dnsenum_result, gdorks_result, virus
     
     if wafw00f_result != "":
         tools.append("wafw00f")
+    
+    if whatweb_result != "":
+        tools.append("whatweb")
 
     if pop_result != "":
         tools.append("pop")
