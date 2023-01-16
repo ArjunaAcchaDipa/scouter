@@ -35,8 +35,8 @@ sudo gem install wpscan
 # Install golang & gobuster
 sudo apt install golang-go -y
 go install github.com/OJ/gobuster/v3@latest
-# echo "export PATH=$PATH:~/go/bin" >> ~/.bashrc
-# source ~/.bashrc
+echo "export PATH=$PATH:~/go/bin" >> ~/.bashrc
+source ~/.bashrc
 sudo ln -sf /usr/local/go/bin/go /usr/local/bin/
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
