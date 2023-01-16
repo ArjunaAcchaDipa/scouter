@@ -197,5 +197,8 @@ def main():
     elif not is_help:
         banner.empty_options()
 
+    end = time.time()
+    basic_command.elapsed_time(start, end)
+
 if __name__ == "__main__":
     main()

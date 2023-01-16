@@ -153,7 +153,7 @@ def get_tools_used(nmap_result, dig_result, dnsenum_result, gdorks_result, virus
 def input_timeout(input_display):
     try:
         # Take timed input using inputimeout() function
-        data = inputimeout(prompt=input_display, timeout=20)
+        data = inputimeout(prompt=input_display, timeout=60)
 
     # Catch the timeout error
     except Exception:
@@ -161,3 +161,21 @@ def input_timeout(input_display):
         data = "default"
     
     return data
+
+def elapsed_time(start_time, end_time):
+    total_time = end_time - start_time
+
+    if (total_time > 3600):
+        hours = int(total_time / 3600)
+        minutes = int((total_time % 3600) / 60)
+        seconds = int((total_time % 3660) % 60)
+        print(f"Completed in {hours} hour(s), {minutes} minute(s) and {seconds} second(s)\n")
+    elif (total_time > 60):
+        minutes = int((total_time % 3600) / 60)
+        seconds = int((total_time % 3660) % 60)
+        print(f"Completed in {minutes} minute(s) and {seconds} second(s)\n")
+    else:
+        seconds = int((total_time % 3660) % 60)
+        print(f"Completed in {seconds} second(s)\n")
+    
+    exit()

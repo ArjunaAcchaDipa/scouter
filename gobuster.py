@@ -44,14 +44,17 @@ def default_check(target, thread, is_default, scan_type, wordlist):
     elif is_default and scan_type == "subdomain":
         return output, default_thread, mode, default_scan_subdomain_wordlist
     elif not is_default:
-        wordlist = basic_command.input_timeout("Wordlist for Directory/Subdomain Scan: ")
+        wordlist = basic_command.input_timeout("Wordlist for Directory/Subdomain Scan (timeout in 60 seconds): ")
         if wordlist == "default" and scan_type == "directory":
             wordlist = default_scan_directory_wordlist
+            print(f"Gobuster wordlist for directory will be set to {wordlist} because no wordlist were inputted")
         elif wordlist == "default" and scan_type == "subdomain":
             wordlist = default_scan_subdomain_wordlist
+            print(f"Gobuster wordlist for subdomain will be set to {wordlist} because no wordlist were inputted")
 
-        thread = basic_command.input_timeout("Thread for Gobuster: ")
+        thread = basic_command.input_timeout("Thread for Gobuster (timeout in 60 seconds): ")
         if thread == "default":
             thread = default_thread
+            print(f"Gobuster thread will be set to {thread} because no API Key were inputted")
 
         return output, thread, mode, wordlist
