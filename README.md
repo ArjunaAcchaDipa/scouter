@@ -19,6 +19,8 @@
     - base64
     - python-decouple
     - docx-mailmerge
+    - shodan
+    - inputimeout
 - Tools
     - DiG
     - dnsenum
@@ -45,10 +47,10 @@
 
 From your command line, clone and run **Scouter**:
 ```bash
-$ git clone https://github.com/ArjunaAcchaDipa/Scouter.git
+$ git clone https://github.com/ArjunaAcchaDipa/scouter.git
 
 # Change directory using your terminal or cmd.
-$ cd Scouter/
+$ cd scouter/
 
 # Run the install.sh file
 $ ./install.sh
