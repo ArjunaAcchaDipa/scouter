@@ -3,9 +3,6 @@
 # Update the machine
 sudo apt update -y
 
-# Set golang configuration
-. ./go.cfg
-
 # Installing python
 sudo apt install software-properties-common -y
 sudo apt install python3.10 -y
@@ -37,10 +34,6 @@ sudo apt install golang-go -y
 go install github.com/OJ/gobuster/v3@latest
 echo "export PATH=$PATH:~/go/bin" >> ~/.bashrc
 source ~/.bashrc
-sudo ln -sf /usr/local/go/bin/go /usr/local/bin/
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$GOROOT/bin:$HOME/.local/bin:$PATH
 
 # Tool to convert docx to pdf
 sudo apt install abiword -y
