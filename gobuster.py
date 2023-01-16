@@ -28,7 +28,6 @@ def scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbo
     return f"{result}"
 
 def default_check(target, thread, is_default, scan_type, wordlist):
-    # getting data from .env file
     default_scan_directory_wordlist = "./wordlist/directory-list-2.3-medium.txt"
     default_scan_subdomain_wordlist = "./wordlist/subdomain-wordlist.txt"
     default_thread = "50"
@@ -45,6 +44,14 @@ def default_check(target, thread, is_default, scan_type, wordlist):
     elif is_default and scan_type == "subdomain":
         return output, default_thread, mode, default_scan_subdomain_wordlist
     elif not is_default:
-        wordlist = input("Wordlist for Directory/Subdomain Scan: ")
-        thread = input("Thread: ")
+        wordlist = basic_command.input_timeout("Wordlist for Directory/Subdomain Scan: ")
+        if wordlist == "default" and scan_type == "directory":
+            wordlist = default_scan_directory_wordlist
+        elif wordlist == "default" and scan_type == "subdomain":
+            wordlist = default_scan_subdomain_wordlist
+
+        thread = basic_command.input_timeout("Thread for Gobuster: ")
+        if thread == "default":
+            thread = default_thread
+
         return output, thread, mode, wordlist

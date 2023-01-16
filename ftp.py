@@ -35,6 +35,8 @@ def default_check(is_default, wordlist):
     if is_default:
         wordlist = default_ftp_credentials
     elif wordlist == "":
-        wordlist = input("Wordlist for FTP Credentials Wordlist: ")
+        wordlist = basic_command.input_timeout("Wordlist for FTP Credentials Wordlist: ")
+        if wordlist == "default":
+            wordlist = default_ftp_credentials
     
     return wordlist

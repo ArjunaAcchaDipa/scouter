@@ -11,6 +11,9 @@ def scan(target, api_key, current_time, is_verbose):
     is_ip, is_url = basic_command.check_ip_url(target)
     api_key = default_check(api_key)
 
+    if api_key.startswith("Skipping"):
+        return api_key
+
     if is_verbose:
         print("[+] Running VirusTotal scan")
 
@@ -31,6 +34,8 @@ def scan(target, api_key, current_time, is_verbose):
 
 def default_check(api_key):
     if api_key == "":
-        api_key = input("API Key for VirusTotal: ")
+        api_key = basic_command.input_timeout("API Key for VirusTotal: ")
+        if api_key == "default":
+            api_key = "Skipping VirusTotal because no API Key were inputted"
     
     return api_key

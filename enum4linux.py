@@ -32,6 +32,8 @@ def default_check(is_default, wordlist):
     if is_default:
         wordlist = default_wordlist
     elif wordlist == "":
-        wordlist = input("Wordlist for enum4linux: ")
+        wordlist = basic_command.input_timeout("Wordlist for enum4linux: ")
+        if wordlist == "default":
+            wordlist = default_wordlist
     
     return wordlist

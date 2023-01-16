@@ -2,6 +2,7 @@ import subprocess
 import time
 import re
 from decouple import config
+from inputimeout import inputimeout
 
 def colors(color):
     if color == "red":
@@ -148,3 +149,15 @@ def get_tools_used(nmap_result, dig_result, dnsenum_result, gdorks_result, virus
             tools_used += ", "
 
     return tools_used
+
+def input_timeout(input_display):
+    try:
+        # Take timed input using inputimeout() function
+        data = inputimeout(prompt=input_display, timeout=20)
+
+    # Catch the timeout error
+    except Exception:
+        # Declare the timeout statement
+        data = "default"
+    
+    return data

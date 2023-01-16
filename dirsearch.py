@@ -33,6 +33,8 @@ def default_check(is_default, thread):
     if is_default:
         thread = default_thread 
     elif thread == "":
-        thread = input("Thread for dirsearch: ")
+        thread = basic_command.input_timeout("Thread for dirsearch: ")
+        if thread == "default":
+            thread = default_thread
     
     return thread
