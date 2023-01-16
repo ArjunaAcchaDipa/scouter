@@ -8,6 +8,9 @@ def scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbo
 
     basic_command.mkdir(output_directory)
 
+    if is_verbose:
+        print(f"[+] Running gobuster for {scan_type}")
+
     # dir   --> to scan directory
     # vhost --> to scan subdomain
     # -u    --> target's url/ip
@@ -20,7 +23,7 @@ def scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbo
     result = basic_command.read_file(f"{output}")
 
     if is_verbose:
-        print (result)
+        print(result)
         
     return f"{result}"
 

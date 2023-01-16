@@ -9,6 +9,9 @@ def scan(target, port, current_time, is_verbose):
 
     port = default_check(port)
 
+    if is_verbose:
+        print("[+] Running Nmap for initial data")
+
     # -A        --> Enable OS detection, version detection, script scanning, and traceroute
     # -p        --> Port range
     # --script  --> script scan
@@ -19,6 +22,9 @@ def scan(target, port, current_time, is_verbose):
     basic_command.run_command(f"nmap -A -p{port} --script vulners -T4 {target} -Pn -oN {output}")
 
     result = basic_command.read_file(f"{output}")
+
+    if is_verbose:
+        print(result)
 
     return f"{result}"
 

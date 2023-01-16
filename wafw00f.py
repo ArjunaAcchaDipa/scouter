@@ -7,11 +7,14 @@ def scan(target, service, current_time, is_verbose):
 
     basic_command.mkdir(output_directory)
 
+    if is_verbose:
+        print("[+] Running WAFW00F scan")
+
     basic_command.run_command(f"wafw00f {service}://{target} -a > {output}")
 
     result = basic_command.read_file(f"{output}")
 
     if is_verbose:
-        print (result)
+        print(result)
 
     return f"{result}"

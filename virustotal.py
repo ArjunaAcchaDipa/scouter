@@ -11,6 +11,9 @@ def scan(target, api_key, current_time, is_verbose):
     is_ip, is_url = basic_command.check_ip_url(target)
     api_key = default_check(api_key)
 
+    if is_verbose:
+        print("[+] Running VirusTotal scan")
+
     if is_url and not is_ip:
         url_in_base64 = base64.urlsafe_b64encode(target.encode()).decode().strip('=')
 
@@ -22,7 +25,7 @@ def scan(target, api_key, current_time, is_verbose):
     result = basic_command.read_file(f"{output}")
 
     if is_verbose:
-        print (result)
+        print(result)
         
     return f"{result}"
 

@@ -10,6 +10,9 @@ def enumeration(target, is_default, current_time, wordlist, is_verbose):
 
     credentials = default_check(is_default, wordlist)
 
+    if is_verbose:
+        print("[+] Running ftp enumeration")
+
     for credential in credentials:
         basic_command.run_command(f"wget ftp://{credential}@{target} -o {output} -O {output_directory}{output_html}")
 
@@ -20,6 +23,9 @@ def enumeration(target, is_default, current_time, wordlist, is_verbose):
     
     if "Logged in" not in result:
         result = "No credential matched"
+
+    if is_verbose:
+        print(result)
 
     return f"{result}"
 

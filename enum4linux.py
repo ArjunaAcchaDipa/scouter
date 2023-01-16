@@ -8,6 +8,9 @@ def scan(target, is_default, current_time, wordlist, is_verbose):
     basic_command.mkdir(output_directory)
 
     wordlist = default_check(is_default, wordlist)
+
+    if is_verbose:
+        print("[+] Running enum4linux scan")
     
     # -n --> nmblookup
     # -P --> get password policy information
@@ -19,7 +22,7 @@ def scan(target, is_default, current_time, wordlist, is_verbose):
     result = basic_command.read_file(f"{output}")
 
     if is_verbose:
-        print (result)
+        print(result)
         
     return f"{result}"
 

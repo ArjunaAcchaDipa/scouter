@@ -8,6 +8,9 @@ def scan(target, thread, is_default, current_time, is_verbose):
     basic_command.mkdir(output_directory)
     
     thread = default_check(is_default, thread)
+    
+    if is_verbose:
+        print("[+] Running dirsearch scan")
 
     # -u    --> target's url/ip
     # -t    --> threads
@@ -20,7 +23,7 @@ def scan(target, thread, is_default, current_time, is_verbose):
     result = basic_command.read_file(f"{output}")
 
     if is_verbose:
-        print (result)
+        print(result)
         
     return f"{result}"
 
