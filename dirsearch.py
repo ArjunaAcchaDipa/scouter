@@ -18,7 +18,7 @@ def scan(target, thread, is_default, current_time, is_verbose):
     # -e    --> extension
     # -x    --> exclude status-code
 
-    basic_command.run_command(f"dirsearch -u {target} -e php,html,js,txt,sql -t {thread} -r -x 402-999 > {output}")
+    basic_command.run_command(f"dirsearch -u {target} -e php,html,js,txt,sql -t {thread} -r -x 402-999 -o {output}")
 
     result = basic_command.read_file(output).lstrip("\n").rstrip("\n")
 
@@ -33,7 +33,7 @@ def default_check(is_default, thread):
     if is_default:
         thread = default_thread 
     elif thread == "":
-        thread = basic_command.input_timeout("Thread for dirsearch (timeout in 60 seconds): ")
+        thread = basic_command.input_timeout("\n[-] Thread for dirsearch (timeout in 60 seconds): ")
         if thread == "default":
             thread = default_thread
             print(f"[!] dirsearch thread will be set to {thread} because no thread were inputted\n")
