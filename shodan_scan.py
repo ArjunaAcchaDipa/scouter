@@ -63,7 +63,7 @@ def scan(search_query, api_key, current_time, is_verbose):
     
 def default_check(api_key):
     if api_key == "":
-        api_key = basic_command.input_timeout("API Key for Shodan (timeout in 60 seconds): ")
+        api_key = basic_command.input_timeout("\n[-] API Key for Shodan (timeout in 60 seconds): ")
         if api_key == "default":
             api_key = "Skipping Shodan because there is no API Key inputted"
             print(f"[!] Shodan will be skipped because no API Key were inputted\n")

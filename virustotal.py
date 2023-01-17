@@ -36,7 +36,7 @@ def scan(target, api_key, current_time, is_verbose):
 
 def default_check(api_key):
     if api_key == "":
-        api_key = basic_command.input_timeout("API Key for VirusTotal (timeout in 60 seconds): ")
+        api_key = basic_command.input_timeout("\n[-] API Key for VirusTotal (timeout in 60 seconds): ")
         if api_key == "default":
             api_key = "Skipping VirusTotal because no API Key were inputted"
             print(f"[!] VirusTotal will be skipped because no API Key were inputted\n")
