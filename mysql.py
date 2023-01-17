@@ -8,13 +8,13 @@ def enumeration(target, port, current_time, is_verbose):
     basic_command.mkdir(output_directory)
 
     if is_verbose:
-        print("[+] Running mysql enumeration")
+        print("[+] Running mysql enumeration\n")
 
     basic_command.run_command(f"nmap -sV -p{port} --script mysql-audit,mysql-databases,mysql-dump-hashes,mysql-empty-password,mysql-enum,mysql-info,mysql-query,mysql-users,mysql-variables,mysql-vuln-cve2012-2122 {target} -oN {output}")
 
-    result = basic_command.read_file(f"{output}")
+    result = basic_command.read_file(output).lstrip("\n").rstrip("\n")
 
     if is_verbose:
-        print(result)
+        print(f"{result}\n")
 
-    return f"{result}"
+    return result

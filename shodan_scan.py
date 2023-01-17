@@ -28,11 +28,11 @@ def scan(search_query, api_key, current_time, is_verbose):
 
     if api_key.startswith("Skipping"):
         if is_verbose:
-            print(f"[!] {api_key}")
+            print(f"[!] {api_key}\n")
         return api_key
 
     if is_verbose:
-        print("[+] Running Shodan scan")
+        print("[+] Running Shodan scan\n")
 
     try:
         # Setup the api
@@ -53,7 +53,7 @@ def scan(search_query, api_key, current_time, is_verbose):
         basic_command.run_command(f"echo '{results}' > {output}")
 
         if is_verbose:
-            print(results)
+            print(f"{results}\n")
         
         return results
 
@@ -66,6 +66,6 @@ def default_check(api_key):
         api_key = basic_command.input_timeout("API Key for Shodan (timeout in 60 seconds): ")
         if api_key == "default":
             api_key = "Skipping Shodan because there is no API Key inputted"
-            print(f"Shodan will be skipped because no API Key were inputted")
+            print(f"[!] Shodan will be skipped because no API Key were inputted\n")
     
     return api_key

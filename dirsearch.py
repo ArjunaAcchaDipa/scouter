@@ -10,7 +10,7 @@ def scan(target, thread, is_default, current_time, is_verbose):
     thread = default_check(is_default, thread)
     
     if is_verbose:
-        print("[+] Running dirsearch scan")
+        print("[+] Running dirsearch scan\n")
 
     # -u    --> target's url/ip
     # -t    --> threads
@@ -20,12 +20,12 @@ def scan(target, thread, is_default, current_time, is_verbose):
 
     basic_command.run_command(f"dirsearch -u {target} -e php,html,js,txt,sql -t {thread} -r -x 402-999 > {output}")
 
-    result = basic_command.read_file(f"{output}")
+    result = basic_command.read_file(output).lstrip("\n").rstrip("\n")
 
     if is_verbose:
-        print(result)
+        print(f"{result}\n")
         
-    return f"{result}"
+    return result
 
 def default_check(is_default, thread):
     default_thread = "50"
@@ -36,6 +36,6 @@ def default_check(is_default, thread):
         thread = basic_command.input_timeout("Thread for dirsearch (timeout in 60 seconds): ")
         if thread == "default":
             thread = default_thread
-            print(f"dirsearch thread will be set to {thread} because no thread were inputted")
+            print(f"[!] dirsearch thread will be set to {thread} because no thread were inputted\n")
     
     return thread

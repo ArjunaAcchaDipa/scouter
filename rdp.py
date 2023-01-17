@@ -8,13 +8,13 @@ def enumeration(target, current_time, is_verbose):
     basic_command.mkdir(output_directory)
 
     if is_verbose:
-        print("[+] Running RDP enumeration")
+        print("[+] Running RDP enumeration\n")
 
     basic_command.run_command(f"nmap --script \"rdp-enum-encryption or rdp-vuln-ms12-020 or rdp-ntlm-info\" -p3389 {target} -oN {output}")
 
-    result = basic_command.read_file(f"{output}")
+    result = basic_command.read_file(output).lstrip("\n").rstrip("\n")
 
     if is_verbose:
-        print(result)
+        print(f"{result}\n")
 
-    return f"{result}"
+    return result

@@ -27,7 +27,7 @@ Linkedin employees - https://www.google.com/search?q=site%3Alinkedin.com%20emplo
     basic_command.run_command(f"echo \"{gdorks_result}\" {output}")
 
     if is_verbose:
-        print("[+] Google Dorks")
+        print("[+] Google Dorks\n")
         print(gdorks_result)
 
     return gdorks_result

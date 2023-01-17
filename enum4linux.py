@@ -10,7 +10,7 @@ def scan(target, is_default, current_time, wordlist, is_verbose):
     wordlist = default_check(is_default, wordlist)
 
     if is_verbose:
-        print("[+] Running enum4linux scan")
+        print("[+] Running enum4linux scan\n")
     
     # -n --> nmblookup
     # -P --> get password policy information
@@ -19,7 +19,7 @@ def scan(target, is_default, current_time, wordlist, is_verbose):
 
     basic_command.run_command(f"enum4linux -n -P -s {wordlist} -U {target} > {output}")
 
-    result = basic_command.read_file(f"{output}")
+    result = basic_command.read_file(output).lstrip("\n").rstrip("\n")
 
     if is_verbose:
         print(result)
@@ -35,6 +35,6 @@ def default_check(is_default, wordlist):
         wordlist = basic_command.input_timeout("Wordlist for enum4linux (timeout in 60 seconds): ")
         if wordlist == "default":
             wordlist = default_wordlist
-            print(f"enum4linux wordlist will be set to {wordlist} because no wordlist were inputted")
+            print(f"[!] enum4linux wordlist will be set to {wordlist} because no wordlist were inputted\n")
     
     return wordlist

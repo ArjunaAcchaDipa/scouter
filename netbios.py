@@ -8,13 +8,13 @@ def enumeration(target, port, current_time, is_verbose):
     basic_command.mkdir(output_directory)
 
     if is_verbose:
-        print("[+] Running NetBIOS Name Service enumeration")
+        print("[+] Running NetBIOS Name Service enumeration\n")
 
     basic_command.run_command(f"nmblookup -A {target} > {output} && nmap --script nbstat -p{port} {target} >> {output}")
 
-    result = basic_command.read_file(f"{output}")
+    result = basic_command.read_file(output).lstrip("\n").rstrip("\n")
 
     if is_verbose:
-        print(result)
+        print(f"{result}\n")
 
-    return f"{result}"
+    return result

@@ -9,7 +9,7 @@ def scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbo
     basic_command.mkdir(output_directory)
 
     if is_verbose:
-        print(f"[+] Running gobuster for {scan_type}")
+        print(f"[+] Running gobuster for {scan_type}\n")
 
     # dir   --> to scan directory
     # vhost --> to scan subdomain
@@ -20,12 +20,12 @@ def scan(target, thread, is_default, current_time, scan_type, wordlist, is_verbo
     
     basic_command.run_command(f"gobuster {mode} -u {target} -w {wordlist} -t {thread} -k > {output}")
 
-    result = basic_command.read_file(f"{output}")
+    result = basic_command.read_file(output).lstrip("\n").rstrip("\n")
 
     if is_verbose:
-        print(result)
+        print(f"{result}\n")
         
-    return f"{result}"
+    return result
 
 def default_check(target, thread, is_default, scan_type, wordlist):
     default_scan_directory_wordlist = "./wordlist/directory-list-2.3-medium.txt"
@@ -47,14 +47,14 @@ def default_check(target, thread, is_default, scan_type, wordlist):
         wordlist = basic_command.input_timeout("Wordlist for Directory/Subdomain Scan (timeout in 60 seconds): ")
         if wordlist == "default" and scan_type == "directory":
             wordlist = default_scan_directory_wordlist
-            print(f"Gobuster wordlist for directory will be set to {wordlist} because no wordlist were inputted")
+            print(f"[!] Gobuster wordlist for directory will be set to {wordlist} because no wordlist were inputted\n")
         elif wordlist == "default" and scan_type == "subdomain":
             wordlist = default_scan_subdomain_wordlist
-            print(f"Gobuster wordlist for subdomain will be set to {wordlist} because no wordlist were inputted")
+            print(f"[!] Gobuster wordlist for subdomain will be set to {wordlist} because no wordlist were inputted\n")
 
         thread = basic_command.input_timeout("Thread for Gobuster (timeout in 60 seconds): ")
         if thread == "default":
             thread = default_thread
-            print(f"Gobuster thread will be set to {thread} because no API Key were inputted")
+            print(f"[!] Gobuster thread will be set to {thread} because no API Key were inputted\n")
 
         return output, thread, mode, wordlist
