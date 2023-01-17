@@ -36,10 +36,10 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
     wpscan_result = ""
 
     for open_port in open_ports:
-        # '80', 'tcp open  http    Apache httpd 2.4.18 ((Ubuntu))'
-        port = open_port.split("/")[0]
-        # ['80/tcp', 'open', '', 'http', '', '', '', 'Apache', 'httpd', '2.4.18', '((Ubuntu))']
-        service = open_port.split(" ")[3].lower()
+        # ['80', 'tcp']
+        port = basic_command.remove_empty(open_port)[0].split("/")[0]
+        # ['80/tcp', 'open', 'http', 'Apache', 'httpd', '2.4.18', '((Ubuntu))']
+        service = basic_command.remove_empty(open_port)[2].lower()
 
         if service == "ftp" and ftp_result == "":
             ftp_result = ftp.enumeration(host, is_default, filename_timestamp, ftp_wordlist, is_verbose)

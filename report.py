@@ -64,8 +64,8 @@ def parsing_summary(nmap_result, dig_result, dnsenum_result, gdorks_result, viru
     services = ""
 
     for open_port in open_ports:
-        port = open_port.split("/")[0]
-        service = open_port.split(" ")[3].lower()
+        port = basic_command.remove_empty(open_port)[0].split("/")[0]
+        service = basic_command.remove_empty(open_port)[2].lower()
 
         services += f"{service} in port {port},"
     
