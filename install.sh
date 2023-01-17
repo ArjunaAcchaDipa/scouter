@@ -21,6 +21,7 @@ sudo apt install git-all -y
 sudo apt install dirsearch -y
 sudo apt install dnsenum -y
 sudo apt install enum4linux -y
+sudo apt install gobuster -y
 sudo apt install nikto -y
 sudo apt install nmap -y
 sudo apt install wafw00f -y
@@ -29,9 +30,8 @@ sudo apt install whois -y
 sudo apt install ruby-full -y
 sudo gem install wpscan
 
-# Install golang & gobuster
+# Install golang
 sudo apt install golang-go -y
-go install github.com/OJ/gobuster/v3@latest
 echo "export PATH=$PATH:~/go/bin" >> ~/.bashrc
 source ~/.bashrc
 
@@ -39,7 +39,4 @@ source ~/.bashrc
 sudo apt install abiword -y
 
 # Give recommendation to close and re-open terminal
-echo -e "\n\nRun this command in terminal:"
-echo "export PATH=\$PATH:~/go/bin"
-echo -e "\nAfter running export command"
 echo "Try to re-open the terminal"
