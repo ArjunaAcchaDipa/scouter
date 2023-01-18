@@ -22,7 +22,7 @@ Login pages - https://www.google.com/search?q=site%3A{target}%20inurl%3Asignup%2
 Open redirects - https://www.google.com/search?q=site%3A{target}%20inurl%3Aredir%20%7C%20inurl%3Aurl%20%7C%20inurl%3Aredirect%20%7C%20inurl%3Areturn%20%7C%20inurl%3Asrc%3Dhttp%20%7C%20inurl%3Ar%3Dhttp
 Stackoverflow - https://www.google.com/search?q=site%3Astackoverflow.com%20%22{target}%22
 Apache Struts RCE - https://www.google.com/search?q=site%3A{target}%20ext%3Aaction%20%7C%20ext%3Astruts%20%7C%20ext%3Ado
-Linkedin employees - https://www.google.com/search?q=site%3Alinkedin.com%20employees%20{target}""")
+Linkedin employees - https://www.google.com/search?q=site%3Alinkedin.com%20employees%20{target}\n""")
 
     basic_command.run_command(f"echo \"{gdorks_result}\" {output}")
 
