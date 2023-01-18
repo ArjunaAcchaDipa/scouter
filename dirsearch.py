@@ -18,7 +18,8 @@ def scan(target, thread, is_default, current_time, is_verbose):
     # -e    --> extension
     # -x    --> exclude status-code
 
-    basic_command.run_command(f"dirsearch -u {target} -e php,html,js,txt,sql -t {thread} -r -x 402-999 -o {output}")
+    basic_command.run_command(f"sudo dirsearch -u {target} -e php,html,js,txt,sql -t {thread} -r -x 402-999 --format plain -o {output_file}")
+    basic_command.run_command(f"cat /usr/lib/python3/dist-packages/dirsearch/{output_file} > {output}")
 
     result = basic_command.read_file(output).lstrip("\n").rstrip("\n")
 
