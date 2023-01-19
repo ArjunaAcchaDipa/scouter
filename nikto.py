@@ -10,7 +10,7 @@ def scan(target, current_time, is_verbose):
     if is_verbose:
         print("[+] Running Nikto scan\n")
 
-    basic_command.run_command(f"nikto -h {target} > {output}")
+    basic_command.run_command(f"nikto -h 10.10.176.187 -maxtime 30m -timeout 1 -nolookup -nossl > {output}")
 
     result = basic_command.read_file(output).lstrip("\n").rstrip("\n")
 
