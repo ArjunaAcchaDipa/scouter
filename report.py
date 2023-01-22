@@ -3,7 +3,7 @@ from mailmerge import MailMerge
 
 import nmap
 
-def auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, shodan_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
+def auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, shodan_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result, filename_timestamp):
     tools_used, current_date, total_services, services = parsing_summary(nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, shodan_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
     os_host = nmap.parsing_data(nmap_result)
@@ -13,6 +13,8 @@ def auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, vi
     result_filename = write_to_docx(host, os_host, current_date, tools_used, total_services, services, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, shodan_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
 
     convert_docx_to_pdf(result_filename)
+
+    move_file_to_result_folder(host, result_filename, filename_timestamp)
 
 def write_to_docx(host, os_host, current_date, tools_used, total_services, services, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, shodan_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result):
     template = "template_report.docx"
@@ -148,4 +150,14 @@ def empty_check(nmap_result, dig_result, dnsenum_result, gdorks_result, virustot
 def convert_docx_to_pdf(result_filename):
     pdf_filename = result_filename.rstrip(".docx") + ".pdf"
 
+    result_filename = result_filename.replace(" ", "\ ")
+    pdf_filename = pdf_filename.replace(" ", "\ ")
+
     basic_command.run_command(f"abiword {result_filename} -t pdf -o {pdf_filename}")
+
+def move_file_to_result_folder(host, result_filename, filename_timestamp):
+    output_directory = f"./result/{host}/{filename_timestamp}/"
+
+    files = result_filename.rstrip(".docx")
+
+    basic_command.run_command(f"mv {files} {output_directory}")

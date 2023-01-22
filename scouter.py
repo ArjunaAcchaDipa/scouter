@@ -81,7 +81,7 @@ def auto_scan(host, port, is_default, thread, enum4linux_wordlist, ftp_wordlist,
     if ("wp" in nmap_result.lower() or "wordpress") in nmap_result.lower():
         wpscan_result = wpscan.scan(host, filename_timestamp, is_verbose)
 
-    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, shodan_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result)
+    report.auto_report(host, nmap_result, dig_result, dnsenum_result, gdorks_result, virustotal_result, shodan_result, searchsploit_result, whois_result, open_ports, ftp_result, ssh_result, dirsearch_result, directory_result, subdomain_result, nikto_result, wafw00f_result, whatweb_result, pop_result, enum4linux_result, netbios_result, ldap_result, mssql_result, mysql_result, wpscan_result, filename_timestamp)
 
 def main():
     start = time.time()

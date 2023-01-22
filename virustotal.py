@@ -27,12 +27,12 @@ def scan(target, api_key, current_time, is_verbose):
     elif is_ip and not is_url:
         basic_command.run_command(f"curl --request GET --url https://www.virustotal.com/api/v3/ip_adresses/{target} --header 'x-apikey: {api_key}' > {output}")
 
-    result = basic_command.read_file(f"{output}")
+    result = basic_command.read_file(f"{output}").lstrip("\n").rstrip("\n")
 
     if is_verbose:
-        print(result)
+        print(f"{result}\n")
         
-    return f"{result}"
+    return result
 
 def default_check(api_key):
     if api_key == "":
