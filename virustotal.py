@@ -17,7 +17,7 @@ def scan(target, api_key, current_time, is_verbose):
         return api_key
 
     if is_verbose:
-        print("[+] Running VirusTotal scan")
+        print("[+] Running VirusTotal scan\n")
 
     if is_url and not is_ip:
         url_in_base64 = base64.urlsafe_b64encode(target.encode()).decode().strip('=')
