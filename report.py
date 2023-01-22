@@ -158,6 +158,6 @@ def convert_docx_to_pdf(result_filename):
 def move_file_to_result_folder(host, result_filename, filename_timestamp):
     output_directory = f"./result/{host}/{filename_timestamp}/"
 
-    files = result_filename.rstrip(".docx")
+    files = result_filename.rstrip(".docx").replace(" ", "\ ")
 
     basic_command.run_command(f"mv {files}* {output_directory}")
