@@ -55,9 +55,6 @@ $ cd scouter/
 # Run the install.sh file
 $ ./install.sh
 
-# Run command export so the Gobuster can be used
-$ export PATH=$PATH:~/go/bin
-
 # Change the data in .env
 # Re-open the terminal to refresh the installation
 
