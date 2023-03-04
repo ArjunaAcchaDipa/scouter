@@ -176,14 +176,14 @@ def elapsed_time(start_time, end_time):
     if (total_time > 3600):
         hours = int(total_time / 3600)
         minutes = int((total_time % 3600) / 60)
-        seconds = int((total_time % 3660) % 60)
+        seconds = int(total_time % 60)
         print(f"Completed in {hours} hour(s), {minutes} minute(s) and {seconds} second(s)\n")
     elif (total_time > 60):
         minutes = int((total_time % 3600) / 60)
-        seconds = int((total_time % 3660) % 60)
+        seconds = int(total_time % 60)
         print(f"Completed in {minutes} minute(s) and {seconds} second(s)\n")
     else:
-        seconds = int((total_time % 3660) % 60)
+        seconds = int(total_time % 60)
         print(f"Completed in {seconds} second(s)\n")
     
     exit()
